@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="fr"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Venga Dashboard</title>
+<style>
+:root{--bg:#0f1319;--panel:#171d26;--panel2:#1e2631;--line:#2a3340;--tx:#e9edf2;--mut:#8f9bab;--acc:#e8223b;--onacc:#fff;--acca:rgba(232,34,59,.16);--accg:rgba(232,34,59,.35);--tile:#12171f}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{font-size:16px}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--tx);overflow:hidden}
+body{font:1rem/1.45 "Segoe UI",Roboto,system-ui,sans-serif;-webkit-user-select:none;user-select:none;background:radial-gradient(ellipse at 20% -10%,var(--panel2),var(--bg) 60%) fixed}
+input,textarea{-webkit-user-select:text;user-select:text}
+button{font:inherit;color:inherit}
+em{font-style:normal}
+#app{display:grid;grid-template-columns:5.6rem minmax(0,1fr);grid-template-rows:auto minmax(0,1fr);height:100%;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
+header{grid-column:1/3;grid-row:1;display:flex;align-items:center;padding:.5rem 1.1rem;border-bottom:1px solid var(--line);background:linear-gradient(var(--panel),transparent)}
+#logo{display:flex;align-items:center;margin-right:.9rem;padding-right:.9rem;border-right:1px solid var(--line)}
+#logo .kia{display:block;height:1.15rem;width:4.8rem;-webkit-mask:url(data:image/png;base64,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) center/contain no-repeat;mask:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAlgAAACPCAYAAAAmwqViAAAhI0lEQVR42u2dd7RdVbXGf/ecm0ICJAEhlEgxEAhVSigBAwgCASL1PREEHkYBASkPiERQEFCaKFXgoYAUqQrSezVSQi9KiYCA9BZKSMgp74+5NnfdfW+Sm9xzzt57re8b44xUGDl77zX3b31zrjkhfLUBZe/XBwDvAk8D87s/b0OSiqUS0K7LkFu1K65IUrcqBxa7SinG6AQfod/Iqvv5esCvgE28P98IuC/19yQp74sZoOat4eWBZYHlgEFAH/f7dV2ulm3iZgKvAU+4zVvdu181XSJJouzWQrI2+ri4tQSwDNCvQOv9C+AFYArwlrfW6zHE3ZL3IloEON0BVN39ONP9fCvvxktSkZzYNYCTgCfdYq/rk5vP48CBQH/FF0milDJzNgX+D3gugNj1HnAdsE03m+DgHKzkJVRxv94NOA5Yyv266rlVZQdYN8vBkgrkxI4CJgDbp17cNTkluYPgJ4DxwGOKMRLxpsqT9/EOwKHA+qm/Uy9o7EqD49XAjxx0Bedcp3f3t3iUWUlRZ/LrsdphSgVZwEsC53pObB1zYque7a5PPj5Vb2c+1XuhlPRISxHGrpHOyKh7MBVK7Ko5nkiY4ilgsZDWu58OXACrs5rhgVR3N1CAJRXFCWkD9sXy/P6CFsjk/5OUIrwFDEvFKkkK2bVKYtfBwMfee7ca8HpPNlUPYvVkpZDs+J2A52fjWgmwJArmxK6HHcJIv7D1KR5kXaxYI0XkWq0B3NPD93GIkDUhlJfQSOAvqYA2J9tRgCUV4WBGZQ5OrD7FShmuqFShRNiOewk4HJg2F+/j0NZ6FXgDWLjI/Sb6A0fMo/0owJLyFJz8njC7A/9WOjBIF+tIOqdQJCmUtjGJa3VfhK5Vd5BVB75PAfO6ODB6shc3UoAlkcODGTcrHRjkJ4k3t8nBkgJ0rfoCRwHTI3WtugOsGnBF0V5CSwN/TAWuWi8CngBLyjodOAg4wQtOoReCxryjfQGYL5Imz1IcG8P1saLu2F2r7tb740XK6x4EvJ/Kc/Z2RynAkrI8mLGje+nGEpwqDVi7RT3KXQc+AIYKsKQAyhn6Yj0mZ8q1muV6/08RCHkM8ECDX0ICLKloBzOKHnCqCrhMBRYXYEkBuFaTtbbnuN7fJ8fHPBcHzvH+sY18CQmwpCwOZgwAfgZ82iAntkgF3nXgDmA77IRkPaLALMCSQnDdB2DlDFWlA3u03t/L60mqHzh7rVmELMCSaPHBjK3o3cGMIqYDk0DzKrCHdy2GepBZE2BJUu5dq828+CXXqkCA5d/EdYC7WvASEmBJzX6mkxfossAlkaUD/f5dp2F9vZLrUsZGSXwkwJKk3NdazQ+cotPNxQMs/yTVEODXLWysKMCSmm2nl7ExEe9HlA70N0T3AuvOAjqHOtgQYElSfl2rbwLPRBS/ggCs9EmqXYCXWtxYUYAlNTMwbUxcR5f94PsWsN8swEqAJcCS8r85HAycIdeqeIDlv4RWA67P6CYKsKRmHcw4twF92oqYDqwD5wFLegG71E0QF2AJsKT8bg63pmOmr2qtCgJYfjpwIHAsHbOKsmisKMCSGu3E7o3Nn4olMPlgNRnYlO6L+wVYAiwp/zFsSGpzKNeqAICVPh24LfCPHKROBFhSIw9m3B1RYPLTgR8Ch2BNB9PpQAGWAEsqRgzbBnhRtVbFAiz/Bi4PXJWjk1QCLKm3TuxCwG+ALyJKB/rweBkwfBbrXYAlwJLy71otCpwv16pYgJUeAjkB+DhndCzAknqTDtwVeDmynlbJz58BxtE5Hdg2F9dRgCXAkrJ3rf4b608n16pAgOWnA7cAHsnpS0iAJc1LUFoVuCGinlZVb618BhxNx7Bi381DgCXAkgqxQRwKXCTXqliA5ddeDAMuzPlLSIAlMRfpwAXJ/mBGlunA64GV5zIdKMASYEn52iB+x3OtKnKt8g9YPhmXgAOAtwtgOwqwpJ4ezNgOeC7SdOCLwM7zmA4UYAmwpHxsEIcBl0cUw4IALB9KRgOTCnQDBVjSnJ7pEcCVkY64mYFNVhjci3SgAEuAJZH5DNQ9gTcjOYgTBGD5wXZR4Cw6T9euFWiXLsCS0k5sP2CiBwAxFID66cDbgbUbkA4UYAmwpOxcq6WAq+VaFQew0iep9gRep3NBbNHSIAIsyb/3mwOPRzbiJgkGrwHjZ1FXKcASYEnFiWN7YCOr5FoVBLD8m7cmcEvBTyEIsCQfIJYi/wczmpUOrAFnA1+ZzYgbAZYAS8r/qK4RwF/lWhUHsHzXahBwEjA9ADIWYKF0oPvxAODdiNKBftC9H/hGk9KBAiwBlkTLaq32BT6Sa1UcwPJ3sTvQ0Uo/BDIWYMlGHwP8LdIRN+8A+3trvNyiF74AS4AlNbbWagRwo1yrYgFW2RvMfE6AqRMBVrw2enIwoxZROtCHxwuwlCgZPPuxA9bHAiypgZvE/bB5oHKtCgRYyQ1cDng00KZkAiyi7Gk1HivmTtchxZAOfAwr4u8uvSDAak3A/USAJTVgk7gKdtpXrlXBACsBjVHAGwGnTgRYce301gbuiDQdOBVrO9G3xelAAZYAS6KhtVYl4DBsbFUM7nvhAas9RchVbN7abViTwWpGO11J6s1OD/fsDnZwcZADjKr781Cf6Xpqzf7Zff8XPbiq6hGRpMJsEhOnfVXgdGBjL77p3VyQl1Hy41ewY56D3U2VsyNRsHRgzX12xoaNT/Dgqhywc1D1rsFzwI7ATg6ukhE3gitJKs5J52S9/gR4wMFVkn3Ru5niWI9J8D0HWNbdRNGxVKSdXtU9tysDvwS2dX+WbBTKAbtWNff9PgdOwdqpfOJtnCp6RCSJopgeNRfP1nHreUO5VsUFrOTltKP7CK6kohV+VoEBWH3CYdjp12o3Re6hpgPLwM3A4cBTSgdKEkV1rSpAH+CnwBHu56FvEoMGrBqWQjnGBe2SLotUoGAEMA44HnOv8NKBBJwOLLv1+wpwJHCpt6argitJoogO/Cis1mo9uVZhOAB14FvASg62BFhS3oNRchJ0OHAZcJ2Dq9DrE+oeXM0ETgPWcnCVjLhJroEkScWpteoL/AKbrrCeaq0IqgZrV++IoSTlNRiVvGB0EHZCbrDbGBD4Tq/qpQnuwQpfH07tgLV+JalYrlUVq7E61W2WcPFMrhVhOFiD3A1uEy1LOd4IJO7NN4G/Ayd6rUT80RGhqebtZN8E9gI2cXBV1ulASSrkaeekbvQk4D4HV1WV6YT34loDWNLdWDW/k/KYwq4Aw4CjsW7sRHI60K+/OBerk3zDrVOBlSRR2FqrjbAU/+qpk8BSYC+wNbyjoZKUp9qExL3ZFxvbNN4LRu2R9LR6COt/s4+Dq7J3DaTiPdfaxMZdazUQa71wp4Orilf+EFoMq8Uep9rpOHmlhS/lrTZhNHY6cAwdrlXIYFXzrsEHmGN1Jh31VzW5VpJU2Hi2JfAbYGRqoxhaDCvJjeNLB2tZXQYpJ89iUsS+CHAGdqJmjFebEHJPq4p3DS4D1sRSCFUVsUsSRXatBgNnYb3qRgbsWlW873QuNlz+RjocLWJ0sAZrLUg5OR0IsBtwHLBUqi0BEfS0egprFnqztz4rcq0kiaK6VmOB3wIrEO5p55o34/VJ4H+Bu9yf9QW2jtk1GKgUoZRxT6sqVgt4K3CRg6tK4Cdbax5cfQr8HOt/c7N3OlAjbiSpmK7VEOBs4CYHV5UATzv7znsFG1G2voOrvl5ZAzHXYA3UupAyGjJeBRbEejod6g1ljmXEDcA12EiMf2rEjSQF4VrtgLWRWS5g18p33h8FDsDa56SvBbED1gCtDSmjETc7uV3PiAhH3EzB5o1dpRE3khREicOiDqz+J+B45m8QZwInA8cC01MxTEXuXgNHSWplD5gR2OnAHYijp5XfLHQ6Vrx+PDDVc/OUDpSk4r0/K55r9Rtg6dRp4FA3iA9irtVk77sqhs1iVI4k0cR0YNIUcz6sAPInwAIRpAP91hIAtwETsEJQpQMliUK7VhVgceAEYPdu1jsBulbTMcfqRLWPEWBJ+UkHjnWLctWI0oHJyZp/Y13oL1Q6UJIIpdZqVyxFtngktVaTMNfqsVRBvzSHYmNJasbpwAqwDHYy8CYHV6FPia97Kc86lg5c28FVydv5KjUvScXs0zcMuBy4xMFVNeATgmXgM2AiNlHiMQ8iBVfIwZLIpOCzD7AfcCSwcMA7vFnt9u7HUqEPKB0oSUHUWoGlAk9IgVXItVZ3AgcDT3ugqVorAZZEdtb5Ji4IrRNJOrDmWeZvA78AzvGcOtUoSBKFzfAkTvzJ2MnnkE8IJkOnP3Gb49NTkKkZqAIsqcVBKCmCXAyrNdo7ktOBfkACOB/4GTaUOd2hXpKkYrpWP8TaySwSgWtVBu4ADgT+oVPOAiyJXIy42cvB1eIOPOqRpAPLwCNYOvCuVHBWnZUkFde1Go6NuRkXiWv1EeZandUNZEoCLInWpwPXxdKBG6eOKbcFnA5MrsGHWD+rU7Gme0k6UEFJkortWu2NuVYLE4drdQNWazXFxW6N6hJgSRmOuFkYG/FygAdcpYhG3FyOpQOnqIhdkoIoc6gAKwK/pmNAceiu1fvYCcHzUnFM7rsASyKbnla7uN3dMhGOuHnWBaTr1dNKkoJyrQ4EjsHmo4bqWiUZhjLwV6zx80upzbMkwJJo/Yib1R1Ybd3NYiXwdODnwEnuMy3V60uSJArrWq2EnZbbNALXqh14C6sZvUi1VgIsKft04EC3IA/Fxt2EPuImnQ68HhvM/IzSgZJEKG58G3AIcBQ2uivUU89+rdUVLo6/rhOCAiwp+3Tg9sCvsNqE2NKBL2PpwCuUDpSkIDaNySGUVbHDKd/01n17wEPm3wQOAy7VJlGjciQyH3EzHLgS+IuDqxhG3CRw9QVW6LqWgyuNuJGkYm8a273C7onAQw6uqoHGtQodNWSXAKMcXJXd9RBcIQdLan1Pq37AQS4IDYpkxI1fS3a7++6PaqcnSUG5VmsCZwCjCdeN9+P1K1g68M+qtRJgSWTe02pz4ETg65GkA/Eaor6BNdm7wLsuGnEjScUvdegLTMDayvSPoNYKbKrEROAd9ecTYEnZgFXNmw5/HLAHcYy48Xd7JeB32PzAd3RcWZKCOvm8AXAK1hA55Fqr5Hu/grVeuEYOPKrBkjLb2SUnAX8MPObgqkbHUd62wK9D0udmIrCfg6t27xpIklTc2NbPbRrvcXBVCbzWKtkoru3gSrVWyMGSsksHjsHSgeul6pBiU9J6oR8wQ4+IJBU+tm2A9bVaM9X/iUBrrZ7DXKub5VohB0vK5D4nu5lFsWGe9zq4qkQwmHlWu90acDZ2ZHuGNhySVGjXaoDbNN7n4KriHeAhUNfqTBfHb5ZrJcCSsgk+ST+U8Vg6cN9UM822iJ/9YcBNwMiIXTxJosBtZapYy4VJWDF7W8CuVbIZ/iewJVbiMVUzBAVYUnbBZy2s/cDvgSW9nV1Zz/+XRf63Ait4Bf6SJOXftRoI/Ba4Ezv9HLprVcd69I1yMUuulQBLavE9TcBhMHAy8ACwmbfDkUvTtXbjqw5CV4ykPYUkFX3juBkwGevbVwvUtfJj9hOYU3cY8JlcKwGWlE234hrwHeARrNFcHw8a2nSpZgtZt2Jd7AVZkpRP12oQcJrbEI1M1SQRUH8+300/CSvev9cr65BrJcCSWjziZmXgWuByBwqhj7hpNGQthRWMDhNkSU1yl6V5d62+DTwMHBD4CcFkwzwZ2AT4CTDNa54q10qAJbXg/vknaI52C3Jb93u1iIvYewNZy7vd8VcFWVITTvOiNcnculZDgHOAvwIjAq21qntu3Ays+fFozLVSrZUAS8ogHVgFtsGGlx4FzOdBge7vvEFWBavFuk2QJUmZu1bjsHKHvQOvtUri+oPAN9yGuaJaKwGWlE06cDhwGXA9sIrSgTSyAa8PWUsKsiSp5a7VUOzk83XA1yKotZrpoGojLBOhWisBlpRB4OmDde6dDOwc2YibrCBrCUGWJLXMtfovrNZqfCSu1X3A+lha8Av3blatlQBLatHL3j+aPAkbYDok0F1d3iBrJex04WKCLElqyuax5LlWFwNXYgdOqoG7Vp9ibRc2Bh71aq00D1WAJbWoKLaCOSh/wIqvR0U84iYryFoFuAVYRJAlSTTataphbvwjwPe8ruXlgF2ruzHX6tepxsdyrQRYUotG3ADs43Y331c6MFPIWh1LFwqyJKlxDZGXwmpJL8Pao1RSJy4JxLWqeq7VBCwb8YyXoZBrJcCSWliHMBrLzZ+NpaeUDswesr6OpQsX9dIXkiTN3VpKNop70lFLGuqkiaq3ab4NWAebsFH3aq0kAZbUoh3dV4AzgL8BG2rETe4gaw0sXbiQe0nIyZKknse4CuZaXQ2c721WygG7Vh8CPwK2wAY1y7USYEm0Nh1YA/bA0oH7e7sfjbjJJ2TdgI3tkJMlSczRmU9i3His1mpHb/NYDti1uhFYF2uUWpJrJcCSWp8O/DrmilzodncVb4FK+YSs9YGbHGTVtJ6kHm6mYnXmh2Od2H9P5zrGUF2r94H9sEbQL6ZSo5IAS2pB0FkAOB7r3ruF0oGFg6zRboe6oCBL6mE7ghhrrfbD+lp9OxLX6hrstPfv5FoJsKRs0oE7Ylb54UA/pQMLC1kbOMgaKMiSpE7tZZbHXN4zsZrF0F2rt4HdgR2Al+VaaSFItDwduALwF6zIc4RG3AQBWRu6Xet8gixpDi/jGGqt6phr9QgwNhLX6mrshODFcq0kAVbrrnEy4mY+4EgXdLZ3v6eeVuFA1rccZPUXZEnM2sUO2bWqYv3i7sBcqwUDda1q3vf6D7ArNt7nVblWkgCrtbu5KrAVVmd1LDC/tzh1D8KCrC2AawVZUoS1Vm1YA82/A5sG7lolG+eLsVqrP8m1kgRYrQOrZCEuA1yC1eispnRgNJCVOFl1rTOJMFOEyXNdAVYF7gJOBAYE7Folfe9ewxyr3YE3U7W1kgTwmQI/TSlir7qX7YFYT6tdIxhxU/dSnrFD1kxgS6wmo4+cLCngwzpl7JDOg8BGAW8g/SkaiWt1tQeRVT0WUkqfK+jTlCL2jbAu7KdiJ2dCH3HjF3qWBFn0cfd8aw+y5GRJIdRglbw4Nwq4B2szM8DbWIboWrUD/8JqZ3fHTguWNZxZmo1LLQerwcWdSwDnuqCzbgQ9rXzL/DMsFfqk1+MLpQsZB1zpAbgOM0hFBcOk1qoPcJQ3yisG1+pc7ITgtXKtpB7qIwFWY2zyOvAD7HTgXt6MqXLA6UA/+FyKdaLfzQXcu9x3rwiymAlsB1zhvYC07iQK6M5XMNfqPuBooG8ErtUUzIneB/hArpU0F5qiQN/7dOB6wN3AecDi3oib0NOB7cBTLvh8zwWiPsCnWLfmez0XB6UL2cFBVknpQnVyL2BNaT/gGMy1Wi8S1+pMzLW6Sa6VNA8pwn8CvOc5LvVIPklwGJs69UcPR9yA1Vad6v2/KoFfw6q3c/sE6+fV37t+pZQ7swBwv/v7MyN6tmb1+cL9eJX3HMWWLky+71BgakRxp+atg+Uohovpx8SNMXc+HT9Di2/JfXoW62nHXL4fpK7XbGzAz8ycnqcxAqyeLaD0kNZdsDEI9QgenloKkK4FRs4h+PiQNUmQ1QWyLkrV7wmwBFh5q7UCK1w/KfXvD/F++bHpFBe3UANoAVYv1vrLyXMkwJo9YPl/tpqzi+uRQIO/KF7A+r7Qw+CTvEAGAw8Isro8MzFClgAr34Dlx7oxwBPev78auGv1NLCJXCsBVgPiew1r5YEAa/YuTBIE5wd+AUzz/vtq4C+E5BpNB04ABnVzXXraiHAI1idHkNX5GvwxMsgSYOUTsHyHfn7n4lQDXq++K/8F1mZioPcukGslwOoNtPtsIcBKAVZbqq3CdlixWj2SB8UPqLcBa/RyV+c7WYKsrunCP0QU2AVY+QMsf01vgdUfhexa+fH7YWC0XCsBVoMd0aeww01tAqzOD4O/wEZgp77qgdcfdGeXvwbsORfpwJ4utiEuqAmyOkPWWZFAlgArP4Dlu1aD3TNYj8S1qmAzYfup1kqA1QRzYpx/DWIGrK28BVb2jtUf7r0AqhGlA6vAGcCi85AO7OmCWwSrdxBkdb4Gp0UAWQKsfACWv5HcEngu8Fjnv9wfAtbXPF4BVpPi+BXpNRYzYG2RCjabAY9FlA70v98kYIOUa9WsRbe4IKvbxXlq4JAlwMoWsHzXaiHg7Ihcq2nAT724plorAVaj4/cUYOG0MREzYH3HXYNlgAsjSwcmO9W3gP29B6LZgSdZeEsIsqKDLAFWdoDlbyR3Al6JqNbqXnpfSyoJsGYXt98FVupubccIWMl3fR44x7sGMaQDfZi5APhqBl2mfch6RpDVZbGeEmhtiACr9YDVlkrPnx+Ba5W8zD8HJnrfX7VWAqxmxOv/eADfBd5jBKw57XhC/36PAps3OR3Y0wU4DOuxJcjqXPh+coAvBQFWawHLD/Y70tEcuRKBa3WP99JrU62VAKvBGaCK9y5dbnbOaMyAVY0sHTgVOBQb0pqHNFTyQC4LvCjI6rIzOj4wyBJgtQawfNdqKNbUNuSNpO9aTQV+rHSgAKsFGaCz6dw/DQFWXGlQ/2G4Cms9kbfAk/w7voYVCcY4t2p2kPWrDF1GAVbxAMt/TnZz6YtYXKtbgBXlWgmwmvycvQhsTw9Pogqwwg46zwLfbmBPq2ZD1kuCrC6A/MtAnCwBVvMAq5RKu18eUa3Vx8ABGZc8SGEC1uymmvQoAyTACjM3PA1rpudbmKUCLMjl6TjhJCere8gSYAmwZlVrtSvwhrd+aoFvIG8AVmhC3z5JgOVvTG4F1pyXDJAAK7wRN9djg6mLVoeQwMMKwKuCrC739qcFhywBVmMByweKr2FlALHUWr0D/ECulQCrBVNN9kh9r7nKIgiwir+bS+7dS24HS4FTSsnCHOkebkFW53RhkSFLgNU4wPLv/z7AB4G7Vv4G8hrsYIxcKwFWM6eanIW1NunVcybAKv5ubibWO2mhQIJO8vJYSZDVLWRNLChAC7B6D1j+2h4OXBeRa/WeXCsBVgvSzvfTwCHgAqxi1yDcDawT4LHksgdZrwuyukDWhAK+ZARYvQOscsq1ei+iWqvLgKXlWgmwmpgOfBs7LNHQqSYCrGLmht8AfljwdGBPnaxVgDcFWV0g68fegHIBVriAVfKu3YpYYXfIrpV/WOd14LvqayXAanIbo/Ox07fpPnIIsOJKB9awBmeLRdLvJYGsNVM7dkGW/Xz/AjlZAqy5B6x279od7F23GGqtLsXGaRXhFLRUHMDy/y2TgU2bmXYWYBXHJn8Q2CjC3Vzy0I8C3hdkdYHu/QoCWQKsngOW71qtDNwRgWtV9U5u7SLXSoDVxGfsQ+AwL2Y2baqJACv/Aec94KBWPAwFgKx1PMiqIshKAtePCpAuFGDNGbDaUqB8MNZIsx7wWK9KKlUzNOI4J8BqfjrwcuyASEsAXoCV35dmHZsjtpR2c12crA8EWV2el31y7mQJsGYPWP7vrQHcFZFr9S86T5yQayXAajS8P5PFVBMBVj53ck8BW+lI8iwhazTwiSDry7WbXIPxOXayBFjdA5bvWrUDR2BjOWKptToPWFiulQCrSQclPgOOpmOqSUtPoQqw8rWT+xhrJtlfxZ1zhKwxgqxuIWvPnEK5AKsrYPlOzVrApAhcq+R6PC/XSoDV5HTg9VgNY2bPmAArP7nhP9MxDV4BR5DVG8jaI4eQJcDqAKxyyrX6OfB54LVWfqw7Axgs10qA1aQM0BQ6H5TIrI2RACv7dOALwE6B97RqJmRt4mxgQVZnyNo9Z5AlwIIRqfW9DvBARK7Vs8Bm2kQKsJpUh/oFcCIwJC9NaQVY2RUlTweOBwapQ3GvIWszYJogqwtk7ZYjyIoZsJLPKu4aDAB+mRp3FbJrVQNOAxaQayXAapIrejuwdt7gXYCVjUV+K3ZSSDu5xkHWFg5aa4KsL69B1XNH2wVYmbo4deBa4BDsRFMsrtUTzmVWrBNgNeP5ep2OutPcwfu7AqyWBdc68Cod9TFKBzYessZitSyCrA7XpJITyIoZsGZVJhCya1V1Dv0AuVYCrCZNNfkdsEiep5o8r0DXknTgTKywcxGlA5umpDXBVsAMpQs77fQqwI4ZQ1bych0c8cau6mJBNfCN5GPABnKtBFgNBCz//zGpKM/X/XoRNb2I/X6sb5OCTeucrASy5GR1QNZMYJscQFY78KTiTpCnoWdgtWX95dALsBoEWH4bo3ex+attRXFFT9Jst6b1tHobmxPXJos8E8ga5wJ+VS/yLyFrOvCtDCErCbwXdNOmRJ9ibyT/jp2K1EZSagRgpaeaXAgsXbTna92AawGyHHFzPjAsz7lh4kgX7uQBliDLfpyWIWQlQXE7beyCcq2OTPX10kZSgNUbwPL//uPA5kWeanKHgl3DdnGPei8vjbjJB2Tt7KUKa4KsL8dHbJbBM9rmPgOwZoBK4RbftVqL7ucpSgKsuQUsfyM8FZhI56kmhQT3demY3SMna97SgR8BE7yXutKB5Cpd+F05Wd1C1qYZQFYSfHfwmgMq7hSnQL8OfAocLtdKahBgpcsFrgKWDyHdnPzDD+lmSKI+cx4kmTwMy6n2IPdO1ndTXbVrgiym0dGjqJRB3DnVux9ysvIPVnXgTmBVuVZSgwDL/7NngG1Da2OUXIwJ3ksngYiKl1qJ8VP1rkW6IPcROg8r1S4u/07W9sA7qcUd6zOeONZTgdVbXCvY5sWdU7rZvMQcc/IQ8yrdZDReBvbyYpzKH6TeAJZvVHwGHAMM9P77UogXZCM6T3TXpytt34XV9ZTV06qQz/gywHles0ulC+FvGbkRJa/o/Qndj1x+ngQOomOklw7tSL0BrHQ68DpgtRAzQG3dXJQqHQN0xzkreDgdhWaxaQbWiv/fwEPAPcDTs7hmUjEWfnK/lsZqkDbEUrxLA/MBfSOpoat7acKzgGPdi7OWAWTV3DXfEuthtqoDYbkkrVUFay/zCtYs9B7gYW/NKN5JcxNnxwI3uZ+XvR9xz9gRwJ/ocESTDV+QgMUsAmy/iHcsVawIN33dSp59LhVLJXcP0y+K/u5ZXwCr24rhma8DH2CHNPICvv79UMq99c/D9FncH8U7aW7X81bAjQ7ck0xPFTgdOM7FniTO1mK7QKop6lwv0i5rPDjQ0nOen0LlNt2P3MX/ku6F1IsU4aapdPPtdG7rUQ4dHBr590Le1UlxgHSMz3w9p8+4XuyKeVKxY+lCwGTMjT4em8dLiOnA7vT/ywMUN7uM47kAAAAASUVORK5CYII=) center/contain no-repeat;background:var(--tx)}
+header h1{font-size:1rem;margin:0;font-weight:650;letter-spacing:.2px}
+header small{display:block;color:var(--mut);font-weight:400;font-size:.74rem;margin-top:.05rem}
+#ck{margin-left:auto;text-align:right}
+#clock{font-size:1.55rem;font-variant-numeric:tabular-nums;font-weight:300;line-height:1.1}
+#date{font-size:.72rem;color:var(--mut);text-transform:capitalize}
+nav{grid-column:1;grid-row:2;display:flex;flex-direction:column;background:var(--panel);border-right:1px solid var(--line);overflow:hidden}
+nav button{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:.3rem .1rem;background:none;border:0;border-left:3px solid transparent;color:var(--mut);font-size:.68rem;letter-spacing:.2px;min-height:3.2rem}
+nav button svg{width:1.75rem;height:1.75rem;margin-bottom:.2rem}
+nav button.on{color:var(--tx);border-left-color:var(--acc);background:linear-gradient(90deg,var(--acca),transparent)}
+nav button.on svg{color:var(--acc);filter:drop-shadow(0 0 6px var(--accg))}
+main{grid-column:2;grid-row:2;min-height:0;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch}
+section{display:none}section.on{display:block}
+/* ---- cartes ---- */
+.card{margin:.5rem .8rem;padding:.9rem 1.05rem;background:linear-gradient(160deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:1rem;box-shadow:0 6px 18px rgba(0,0,0,.18)}
+.card h2{margin:0 0 .5rem;font-size:.78rem;font-weight:650;text-transform:uppercase;letter-spacing:.09em;color:var(--mut);display:flex;align-items:center;justify-content:space-between}
+.card h2 span:first-child{color:var(--tx);text-transform:none;letter-spacing:0;font-size:1.05rem}
+.card p{margin:.3rem 0;color:var(--mut)}
+.eyebrow{font-size:.7rem;text-transform:uppercase;letter-spacing:.09em;color:var(--mut)}
+.row{display:flex;justify-content:space-between;padding:.55rem 0;border-bottom:1px solid var(--line)}
+.row:last-child{border:0}.row span:first-child{color:var(--mut);margin-right:1rem}.row span:last-child{text-align:right;font-weight:500}
+.vo{display:flex;padding:.65rem 0;border-bottom:1px solid var(--line)}
+.vo:last-child{border:0}
+.vo i{flex:none;width:.8rem;height:.8rem;border-radius:50%;margin:.4rem .8rem 0 0}
+.vo>div{flex:1;min-width:0}
+.vo b{display:block}.vo span{color:var(--mut);font-size:.85rem}
+.vo .r{flex:none;text-align:right;margin-left:.8rem;font-weight:600;font-size:.85rem}
+input[type=text],input[type=number],input[type=date],textarea{width:100%;padding:.65rem;background:var(--bg);color:var(--tx);border:1px solid var(--line);border-radius:.6rem;font:inherit}
+textarea{resize:none}
+label{display:block;margin:.65rem 0 .25rem;color:var(--mut);font-size:.82rem}
+.big{font-size:2.4rem;font-weight:300;line-height:1.1}.ok{color:#3ccf8e}.warn{color:#ffa51f}.bad{color:#ff3b4f}
+.btn{margin-top:.7rem;padding:.7rem 1.1rem;background:var(--acc);color:var(--onacc);border:0;border-radius:.65rem;font-weight:650;box-shadow:0 4px 14px var(--acca)}
+.btn.sec{background:none;color:var(--tx);border:1px solid var(--line);box-shadow:none}
+.btn.dng{background:#c62a3a;color:#fff;box-shadow:none}
+.btn+.btn{margin-left:.5rem}
+.ed{margin:0;padding:.35rem .75rem;font-size:.76rem;font-weight:500;background:none;border:1px solid var(--line);border-radius:1rem;color:var(--mut);text-transform:none;letter-spacing:0}
+.note{margin:.5rem .8rem 1rem;color:var(--mut);font-size:.75rem}
+.opt{display:flex;justify-content:space-between;align-items:center;padding:.55rem 0;border-bottom:1px solid var(--line)}
+.opt:last-child{border:0}.opt>span{margin-right:1rem}
+.tg{flex:none;width:3rem;height:1.7rem;border-radius:1rem;background:var(--line);position:relative;border:0;padding:0}
+.tg:after{content:"";position:absolute;top:.2rem;left:.2rem;width:1.3rem;height:1.3rem;border-radius:50%;background:var(--tx);transition:left .15s}
+.tg.on{background:var(--acc)}.tg.on:after{left:1.5rem;background:var(--onacc)}
+.sw{display:flex;flex-wrap:wrap;margin:.2rem -.2rem}
+.sw button{width:2.2rem;height:2.2rem;margin:.2rem;border-radius:50%;border:2px solid var(--line);padding:0}
+.sw button.on{border-color:var(--tx);box-shadow:0 0 0 2px var(--bg) inset}
+.cf{display:flex;align-items:center}.cf input{flex:1}
+.cf .pv{flex:none;width:2.2rem;height:2.2rem;border-radius:.5rem;border:1px solid var(--line);margin-right:.6rem}
+.pre{display:flex;flex-wrap:wrap}
+.pre button{margin:.2rem .4rem .2rem 0;padding:.5rem .9rem;border-radius:1.5rem;border:1px solid var(--line);background:none}
+input[type=range]{width:100%;height:2rem}
+.bar{display:flex;flex-wrap:wrap;padding:.4rem .7rem}
+.bar button,.chip{flex:none;margin:.2rem;padding:.55rem 1rem;border:1px solid var(--line);border-radius:1.5rem;background:none;color:var(--tx);font-size:.85rem}
+.chip.on,.bar button.on{background:var(--tx);color:var(--bg);border-color:var(--tx);font-weight:600}
+.pill{display:inline-block;padding:.15rem .6rem;border-radius:1rem;font-size:.72rem;font-weight:600;background:var(--acca);color:var(--tx)}
+/* ---- accueil ---- */
+#stage{height:17.5rem;perspective:900px;display:flex;align-items:center;justify-content:center;touch-action:none;position:relative;overflow:hidden;background:radial-gradient(ellipse at 50% 48%,var(--panel2),transparent 72%)}
+#cphoto{display:none;max-width:92%;max-height:88%;object-fit:contain;filter:drop-shadow(0 16px 14px rgba(0,0,0,.55));pointer-events:none}
+#stage.photo #cphoto{display:block}#stage.photo #scene{display:none}
+#scene{position:relative;width:0;height:0;transform-style:preserve-3d}
+#scene *{transform-style:preserve-3d;position:absolute}
+.f{left:50%;top:50%;backface-visibility:hidden}
+#stats{display:flex;flex-wrap:wrap;padding:.5rem .55rem 0}
+.stat{display:flex;align-items:center;flex:1 1 9rem;margin:.25rem;padding:.7rem .8rem;text-align:left;background:linear-gradient(160deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:.95rem;min-width:0}
+.stat .si{flex:none;width:2rem;height:2rem;margin-right:.65rem}.stat .si svg{width:100%;height:100%}
+.stat .sv{min-width:0}.stat small{display:block;font-size:.66rem;text-transform:uppercase;letter-spacing:.08em;color:var(--mut)}
+.stat b{display:block;font-size:1.12rem;font-weight:650;line-height:1.2;white-space:nowrap}.stat em{display:block;font-size:.72rem;color:var(--mut);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#sc{display:flex;flex-wrap:wrap;padding:.25rem .55rem 0}
+.sc{display:flex;align-items:center;flex:1 1 11rem;margin:.25rem;min-height:4.2rem;padding:.6rem .95rem;background:linear-gradient(135deg,var(--acca),var(--panel));border:1px solid var(--accg);border-radius:1rem;font-size:1.08rem;font-weight:650;text-align:left}
+.sc:active{background:var(--line)}
+.sc.alt{background:linear-gradient(160deg,var(--panel2),var(--panel));border-color:var(--line)}
+.sci{flex:none;width:2.8rem;height:2.8rem;margin-right:.85rem;display:flex;align-items:center;justify-content:center;border-radius:.75rem;background:var(--acc);color:var(--onacc);overflow:hidden;box-shadow:0 4px 14px var(--accg)}
+.sci svg{width:1.7rem;height:1.7rem}.sci.img{background:none;box-shadow:none}.sci img{width:100%;height:100%}
+/* ---- voyants ---- */
+#vgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(6.6rem,1fr));grid-gap:.55rem;padding:0 .8rem 1rem}
+.tile{display:flex;flex-direction:column;align-items:center;justify-content:flex-start;min-height:6.4rem;padding:.75rem .3rem .5rem;background:linear-gradient(160deg,var(--panel2),var(--panel));border:2px solid var(--line);border-radius:.85rem;font-size:.72rem;line-height:1.2;text-align:center}
+.tile.on{border-color:var(--acc);box-shadow:0 0 0 3px var(--acca)}
+.tile .ti{width:2.5rem;height:2.5rem;margin-bottom:.4rem}
+.tile .ti svg,#vdet .ti svg{width:100%;height:100%;filter:drop-shadow(0 0 5px currentColor)}
+#vdet{display:flex;align-items:flex-start}
+#vdet .ti{flex:none;width:3.2rem;height:3.2rem;margin-right:1rem}
+#vdet b{font-size:1.05rem}#vdet span{display:block;color:var(--mut);margin-top:.2rem}
+/* ---- trajet GPS ---- */
+.gauge{width:min(100%,23rem);margin:.2rem auto}
+.gauge svg{display:block;width:100%}
+.gt{fill:none;stroke:var(--line);stroke-width:11;stroke-linecap:round}
+.gp{fill:none;stroke:var(--acc);stroke-width:11;stroke-linecap:round;filter:drop-shadow(0 0 6px var(--accg));transition:stroke-dasharray .4s}
+.gp.over{stroke:#ff3b4f}
+.gs{font-size:52px;font-weight:300;fill:var(--tx);text-anchor:middle;font-variant-numeric:tabular-nums}
+.gu{font-size:11px;fill:var(--mut);text-anchor:middle;letter-spacing:.1em}
+.gk{font-size:8px;fill:var(--mut);text-anchor:middle}
+.mini{display:grid;grid-template-columns:repeat(3,1fr);grid-gap:.5rem;text-align:center}
+.mini div{padding:.35rem 0}.mini small{display:block;font-size:.66rem;text-transform:uppercase;letter-spacing:.08em;color:var(--mut)}.mini b{font-size:1.25rem;font-weight:500;font-variant-numeric:tabular-nums}
+.trip{display:grid;grid-template-columns:repeat(4,1fr);grid-gap:.4rem;text-align:left;margin-top:.2rem}
+.trip small{display:block;font-size:.64rem;text-transform:uppercase;letter-spacing:.08em;color:var(--mut)}.trip b{font-size:1.1rem;font-weight:550;font-variant-numeric:tabular-nums}
+.cmp{display:flex;align-items:center}.cmp svg{width:3.4rem;height:3.4rem;margin-right:.9rem;flex:none}
+/* ---- carburant ---- */
+.kpis{display:grid;grid-template-columns:repeat(2,1fr);grid-gap:.55rem;margin:.5rem .8rem}
+.kpi{padding:.75rem .9rem;background:linear-gradient(160deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:.95rem}
+.kpi small{display:block;font-size:.66rem;text-transform:uppercase;letter-spacing:.08em;color:var(--mut)}.kpi b{display:block;font-size:1.5rem;font-weight:400;line-height:1.25}.kpi em{font-size:.72rem;color:var(--mut)}
+.chart{width:100%;display:block}.chart text{font-size:9px;fill:var(--mut);text-anchor:middle}
+details{border-bottom:1px solid var(--line);padding:.1rem 0}details:last-child{border:0}
+summary{padding:.7rem 0;font-weight:600;list-style:none;display:flex;justify-content:space-between;align-items:center}
+summary::-webkit-details-marker{display:none}summary:after{content:"+";color:var(--mut);font-size:1.3rem}details[open] summary:after{content:"–"}
+details p{margin:0 0 .8rem}
+/* ---- modales ---- */
+#ov{position:fixed;left:0;top:0;right:0;bottom:0;z-index:50}
+.mb{position:absolute;left:0;top:0;right:0;bottom:0;background:rgba(0,0,0,.62);display:flex;align-items:center;justify-content:center;padding:.5rem}
+.md{width:100%;max-width:38rem;max-height:100%;display:flex;flex-direction:column;background:var(--panel);border:1px solid var(--line);border-radius:1rem;box-shadow:0 10px 40px rgba(0,0,0,.6)}
+.mh{display:flex;align-items:center;justify-content:space-between;padding:.7rem 1rem;border-bottom:1px solid var(--line);font-weight:600}
+.mh button{background:none;border:0;padding:.3rem;width:2.4rem;height:2.4rem}.mh svg{width:100%;height:100%}
+.mc{flex:1;min-height:0;overflow-y:auto;padding:.4rem 1rem .8rem;-webkit-overflow-scrolling:touch}
+.mf{padding:.5rem 1rem .8rem;border-top:1px solid var(--line);display:flex;justify-content:flex-end;flex-wrap:wrap}.mf .btn{margin-top:.3rem}
+.li{display:flex;align-items:center;padding:.5rem 0;border-bottom:1px solid var(--line)}
+.li .lt{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.li .ic{flex:none;width:1.8rem;height:1.8rem;margin-right:.7rem;display:flex}.li .ic svg,.li .ic img{width:100%;height:100%}
+.li button{flex:none;width:2.6rem;height:2.6rem;margin-left:.2rem;background:none;border:1px solid var(--line);border-radius:.5rem;padding:.5rem}.li button svg{width:100%;height:100%}
+.ig{display:grid;grid-template-columns:repeat(auto-fill,minmax(3rem,1fr));grid-gap:.4rem}
+.ig button{height:3rem;background:var(--bg);border:2px solid transparent;border-radius:.5rem;padding:.4rem}.ig button.on{border-color:var(--acc)}.ig svg{width:100%;height:100%}
+.al button{display:flex;align-items:center;width:100%;padding:.55rem .3rem;background:none;border:0;border-bottom:1px solid var(--line);text-align:left}
+.al small{color:var(--mut);margin-left:auto;padding-left:.8rem;font-size:.7rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:45%}
+#toast{position:fixed;left:50%;bottom:1.2rem;transform:translateX(-50%);background:var(--tx);color:var(--bg);padding:.65rem 1.1rem;border-radius:2rem;font-size:.9rem;z-index:99;opacity:0;pointer-events:none;transition:opacity .2s;max-width:90%;text-align:center}
+#toast.on{opacity:1}
+/* ---- portrait / petit écran : navigation en bas ---- */
+@media (max-width:639px),(max-aspect-ratio:13/10){
+ #app{grid-template-columns:minmax(0,1fr);grid-template-rows:auto minmax(0,1fr) auto}
+ header{grid-column:1}
+ nav{grid-column:1;grid-row:3;flex-direction:row;border-right:0;border-top:1px solid var(--line)}
+ main{grid-column:1;grid-row:2}
+ nav button{border-left:0;border-top:3px solid transparent;font-size:.6rem;min-height:3.4rem}
+ nav button.on{border-top-color:var(--acc);background:linear-gradient(180deg,var(--acca),transparent)}
+ nav button svg{width:1.45rem;height:1.45rem}
+}
+/* ---- paysage large (autoradio) ---- */
+@media (min-width:640px) and (min-aspect-ratio:13/10){
+ #s-car.on{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);height:100%}
+ #s-car .colL{display:flex;flex-direction:column;min-height:0;border-right:1px solid var(--line)}
+ #s-car .colL #stage{flex:1;height:auto;min-height:0}
+ #s-car .colR{overflow-y:auto;min-height:0;-webkit-overflow-scrolling:touch}
+ section.cols.on{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:start}
+ section.cols .c1{grid-column:1}section.cols .c2{grid-column:2}
+ #s-set .note{grid-column:1/3}
+ .md{max-width:42rem}
+}
+</style></head><body>
+<div id="app">
+<header><div id="logo"></div><h1><span id="vname"></span><small id="vsub"></small></h1><div id="ck"><div id="clock">--:--</div><div id="date"></div></div></header>
+<nav id="nav"></nav>
+<main>
+<section id="s-car" class="on">
+ <div class="colL"><div id="stage"><img id="cphoto" src="venga.png" alt="Kia Venga"><div id="scene"></div></div><div class="bar" id="views"></div></div>
+ <div class="colR"><div id="stats"></div><div id="sc"></div><div class="bar" id="chips"></div><div class="card" id="info"></div></div>
+</section>
+<section id="s-trip" class="cols"></section>
+<section id="s-fuel" class="cols"></section>
+<section id="s-svc" class="cols"></section>
+<section id="s-vo"></section>
+<section id="s-fi" class="cols"></section>
+<section id="s-set" class="cols"></section>
+</main>
+</div>
+<div id="ov" style="display:none"></div>
+<div id="toast"></div>
+<script>
+(function(){
+"use strict";
+var N=window.VengaNative||null;
+function $(s,r){return (r||document).querySelector(s)}
+function $$(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))}
+function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+function h(tag,a){
+ var e=document.createElement(tag),i,c;
+ if(a)for(var k in a){var v=a[k];
+  if(k==="class")e.className=v;else if(k==="style")e.style.cssText=v;
+  else if(k==="html")e.innerHTML=v;else if(k.slice(0,2)==="on")e[k]=v;
+  else if(v!==false&&v!=null)e.setAttribute(k,v===true?"":v)}
+ for(i=2;i<arguments.length;i++){c=arguments[i];if(c==null||c===false)continue;
+  put(e,c)}
+ return e}
+function put(e,c){if(c==null||c===false)return;if(Array.isArray(c))c.forEach(function(x){put(e,x)});else e.appendChild(typeof c==='object'?c:document.createTextNode(c))}
+function clone(o){return JSON.parse(JSON.stringify(o))}
+function clear(e){while(e.firstChild)e.removeChild(e.firstChild);return e}
+
+/* ============ ICÔNES (symboles ISO du tableau de bord, 32×32) ============ */
+var T='fill="currentColor" stroke="none" font-family="Arial,Helvetica,sans-serif" font-weight="700" text-anchor="middle"';
+var ICONS={
+ oil:'<path d="M8 14h11l4 4v7H8z"/><path d="M12 14v-3h5v3"/><path d="M8 16l-5.500-4"/><path d="M27 17c-1.200 1.800-2 3-2 4.200a2 2 0 0 0 4 0c0-1.200-.8-2.400-2-4.200z"/>',
+ coolant:'<path d="M10 7a2 2 0 0 1 4 0v9.500a4 4 0 1 1-4 0z"/><path d="M17 8h3.500M17 12h3.500"/><path d="M3 27c2-2 3 2 5 0s3 2 5 0 3 2 5 0 3 2 5 0 3 2 4 0"/>',
+ battery:'<path d="M4 11h24v14H4z"/><path d="M8 11V8h4v3M20 11V8h4v3"/><path d="M9 18h5M11.500 15.500v5M19 18h5"/>',
+ brake:'<circle cx="16" cy="16" r="7"/><path d="M16 12v5M16 20.500h.01"/><path d="M7 8a11 11 0 0 0 0 16M25 8a11 11 0 0 1 0 16"/>',
+ parking:'<circle cx="16" cy="16" r="7"/><text x="16" y="20.300" font-size="10.500" '+T+'>P</text><path d="M7 8a11 11 0 0 0 0 16M25 8a11 11 0 0 1 0 16"/>',
+ glow:'<ellipse cx="8" cy="16" rx="3.500" ry="8"/><ellipse cx="13" cy="16" rx="3.500" ry="8"/><ellipse cx="18" cy="16" rx="3.500" ry="8"/><ellipse cx="23" cy="16" rx="3.500" ry="8"/><path d="M26 16h4"/>',
+ engine:'<path d="M7 12h4l2-3h6v3h3v2h3v-3h3v11h-3v-3h-3v4H13l-3-3H7v-3H4v-4h3z"/><path d="M14 9V7M18 9V7M13 7h6"/>',
+ dpf:'<path d="M6 9h20v14H6z"/><path d="M1.500 16H6M26 16h4.500"/><path d="M11 13h.01M16 13h.01M21 13h.01M13.500 16h.01M18.500 16h.01M11 19h.01M16 19h.01M21 19h.01" stroke-width="2.600"/>',
+ water:'<path d="M7 4h18M9 4v15h14V4"/><path d="M9.500 12c1.500-1.500 3 1.500 4.500 0s3 1.500 4.500 0 3 1.500 4.500 0"/><path d="M16 21.500c-2 2.800-3 4-3 5.200a3 3 0 0 0 6 0c0-1.200-1-2.400-3-5.200z"/>',
+ abs:'<circle cx="16" cy="16" r="8"/><text x="16" y="18.200" font-size="5.600" '+T+'>ABS</text><path d="M6.500 8a12 12 0 0 0 0 16M25.500 8a12 12 0 0 1 0 16"/>',
+ esp:'<path d="M5 18l2-4.500A2 2 0 0 1 8.800 12h9.200a2 2 0 0 1 1.700 1l2.300 4H25a2 2 0 0 1 2 2v2H5z"/><circle cx="10" cy="21.500" r="2"/><circle cx="22" cy="21.500" r="2"/><path d="M3 28c2-2 3 2 5 0s3 2 5 0M17 28c2-2 3 2 5 0s3 2 5 0"/>',
+ tpms:'<path d="M6 24c-2-3-3-7-1-11a12 12 0 0 1 22 0c2 4 1 8-1 11"/><path d="M6 24l2.500 2.500L11 24l2.500 2.500L16 24l2.500 2.500L21 24l2.500 2.500L26 24"/><path d="M16 11v7M16 21.500h.01"/>',
+ steering:'<circle cx="16" cy="16" r="11"/><circle cx="16" cy="16" r="3"/><path d="M5.500 14.500c4 0 7 .5 7.500 1.500M26.500 14.500c-4 0-7 .5-7.500 1.500M16 19v8"/>',
+ airbag:'<circle cx="8" cy="6.500" r="2.500"/><path d="M8 11v9h9l1.500 7M8 13.500l6.500 3.500"/><circle cx="22.500" cy="13" r="5"/>',
+ belt:'<circle cx="16" cy="7" r="2.500"/><path d="M9 27v-8c0-3.500 3-6 7-6s7 2.500 7 6v8"/><path d="M10 14l12 10"/>',
+ door:'<path d="M9 4h10a3 3 0 0 1 3 3v18a3 3 0 0 1-3 3H9a3 3 0 0 1-3-3V7a3 3 0 0 1 3-3z"/><path d="M8 11h12"/><path d="M22 13l6-4v10l-6 2"/>',
+ fuel:'<path d="M6 27V7a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v20M4 27h16M8 10h8v5H8z"/><path d="M18 13h3a2 2 0 0 1 2 2v7a2 2 0 0 0 4 0V12l-3-3"/>',
+ bulb:'<path d="M11 21v3h10v-3M10 18c-2-1.500-3-3.500-3-6a9 9 0 0 1 18 0c0 2.500-1 4.500-3 6z"/><path d="M13 28h6"/>',
+ service:'<path d="M21 5a6 6 0 0 0-5.500 8L5 23.500 8.500 27 19 16.500A6 6 0 0 0 27 11l-4 4-4-1-1-4 4-4z"/>',
+ isg:'<path d="M26.500 12.500A10.500 10.500 0 1 0 27 17"/><path d="M26.500 6v6.500H20"/><text x="16" y="20.600" font-size="12" '+T+'>A</text>',
+ isgoff:'<path d="M26.500 12.500A10.500 10.500 0 1 0 27 17"/><path d="M26.500 6v6.500H20"/><text x="16" y="20.600" font-size="12" '+T+'>A</text><path d="M5 27L27 5"/>',
+ highbeam:'<path d="M12 7c-5 0-8 4-8 9s3 9 8 9z"/><path d="M16 8h12M16 12.500h12M16 17h12M16 21.500h12"/>',
+ lowbeam:'<path d="M12 7c-5 0-8 4-8 9s3 9 8 9z"/><path d="M16 8l12 3.500M16 12.500l12 3.500M16 17l12 3.500M16 21.500l12 3.500"/>',
+ turn:'<path d="M3 16l8-7v4.500h3v5h-3V23z"/><path d="M29 16l-8-7v4.500h-3v5h3V23z"/>',
+ link:'<path d="M13 19l6-6M11 15l-3 3a4 4 0 0 0 6 6l3-3M21 17l3-3a4 4 0 0 0-6-6l-3 3"/>',
+ phone:'<path d="M10 4h12a2 2 0 0 1 2 2v20a2 2 0 0 1-2 2H10a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/><path d="M14 24h4"/>',
+ car:'<path d="M5 18l2-6a2 2 0 0 1 2-1.500h14a2 2 0 0 1 2 1.500l2 6v6h-3v-2H8v2H5z"/><path d="M9 18h.01M23 18h.01" stroke-width="3"/>',
+ nav:'<path d="M16 3l8 24-8-6-8 6z"/>',
+ info:'<circle cx="16" cy="16" r="11"/><path d="M16 15v7M16 10.500h.01"/>',
+ warn:'<path d="M16 5l12 21H4z"/><path d="M16 13v6M16 22.500h.01"/>',
+ x:'<path d="M8 8l16 16M24 8L8 24"/>',up:'<path d="M8 20l8-8 8 8"/>',down:'<path d="M8 12l8 8 8-8"/>',
+ edit:'<path d="M5 27l1-6L21 6l5 5L11 26z"/>',plus:'<path d="M16 6v20M6 16h20"/>',trash:'<path d="M6 9h20M12 9V5h8v4M9 9l1 18h12l1-18"/>',
+ gauge:'<path d="M5.500 24a12 12 0 1 1 21 0"/><path d="M16 22l5-9"/><path d="M16 22h.01" stroke-width="3.500"/><path d="M8 17h2M16 8v2M24 17h-2"/>',
+ gear:'<circle cx="16" cy="16" r="4"/><path d="M16 3.500v4M16 24.500v4M3.500 16h4M24.500 16h4M7.200 7.200l2.800 2.800M22 22l2.800 2.800M24.800 7.200L22 10M10 22l-2.800 2.800"/>',
+ calendar:'<path d="M5 8h22v19H5zM5 14h22M11 4v6M21 4v6"/>',
+ book:'<path d="M6 5h14a3 3 0 0 1 3 3v19H9a3 3 0 0 1-3-3zM9 24h14"/><path d="M11 10h8M11 14h8"/>',
+ check:'<path d="M6 17l7 7L26 8"/>'
+};
+var PICK=["oil","coolant","battery","brake","parking","glow","engine","dpf","water","abs","esp","tpms","steering","airbag","belt","door","fuel","bulb","service","isg","isgoff","highbeam","lowbeam","turn","link","phone","car","nav","info","warn"];
+function svg(id,sz){return '<svg viewBox="0 0 32 32"'+(sz?' width="'+sz+'" height="'+sz+'"':'')+' fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'+(ICONS[id]||ICONS.info)+'</svg>'}
+var TONE={r:"#ff3b4f",o:"#ffa51f",g:"#3ccf8e",b:"#4aa3ff",w:"#dfe6ee"};
+var TONE_N={r:"Rouge",o:"Orange",g:"Vert",b:"Bleu",w:"Blanc"};
+
+/* ============ DONNÉES PAR DÉFAUT ============ */
+var DEF={
+ theme:{acc:"#e8223b",bg:"#0f1319",panel:"#171d26",tx:"#e9edf2"},
+ carMode:"photo",scale:100,clock:true,h24:true,keepOn:true,rotate:true,tank:48,alert:0,
+ auto:{on:false,day:"07:30",night:"19:30"},trips:{a:{km:0,ms:0,max:0},b:{km:0,ms:0,max:0}},
+ fuel:[],hist:[],
+ due:[{t:"Contrôle technique",d:""},{t:"Assurance",d:""},{t:"Changement de pneus",d:""}],
+ docs:[{k:"Immatriculation",v:""},{k:"N° de série (VIN)",v:""},{k:"Assurance (n° de contrat)",v:""},{k:"Assistance / dépannage",v:""},{k:"Garage habituel",v:""}],
+ guides:[
+  {t:"Batterie à plat",x:"Couper tous les consommateurs. Avec des câbles : relier + à +, puis relier − du véhicule dépanneur à une masse métallique non peinte de la Venga (pas sur la batterie). Démarrer le véhicule dépanneur, attendre quelques minutes, démarrer la Venga, puis débrancher dans l’ordre inverse. Avec l’ISG, faire tester la batterie ensuite."},
+  {t:"Crevaison",x:"S’arrêter en sécurité, feux de détresse, gilet et triangle. Frein à main, vitesse engagée. Desserrer les écrous avant de lever, lever au point indiqué dans le manuel. Roue de secours : respecter la vitesse maximale inscrite sur son étiquette."},
+  {t:"Température moteur trop haute",x:"S’arrêter dès que possible et couper le moteur. Attendre le refroidissement avant d’ouvrir le bouchon (le liquide est sous pression). Vérifier le niveau ; ne pas repartir en cas de fuite."},
+  {t:"Voyant d’huile allumé",x:"S’arrêter immédiatement, couper le moteur, vérifier le niveau après quelques minutes. Ne pas rouler si le voyant reste allumé."},
+  {t:"Voyant FAP",x:"Rouler 15 à 20 minutes sur route dégagée à régime soutenu (> 2 000 tr/min). Si le voyant persiste, aller au garage."},
+  {t:"Faux plein (essence dans le gazole)",x:"Ne pas démarrer, ne pas mettre le contact. Faire remorquer le véhicule pour vidanger le réservoir."},
+  {t:"Accident / urgence",x:"112 : numéro d’urgence européen. Mettre le gilet, poser le triangle, se mettre à l’abri. Remplir le constat amiable."}],
+ veh:{name:"Venga 1.4 CRDi ISG",sub:"Active · 90 ch · 2010",brand:"KIA",paint:"#bfc7cf"},
+ svc:{km:"",kmL:"",dtL:"",every:15000,months:12},
+ tabs:[{id:"car",l:"Auto",on:true},{id:"trip",l:"Trajet",on:true},{id:"fuel",l:"Carburant",on:true},{id:"svc",l:"Entretien",on:true},{id:"vo",l:"Voyants",on:true},{id:"fi",l:"Infos",on:true},{id:"set",l:"Réglages",on:true}],
+ shortcuts:[{l:"Auto Link",pkg:"",match:"autolink,auto link,android auto,gearhead",ic:"link"}],
+ chips:[
+  {t:"Moteur",h:"1.4 CRDi (1 396 cm³)",x:"90 ch (66 kW) à 4 000 tr/min · 220 Nm de 1 500 à 2 750 tr/min. Boîte manuelle 6 rapports, ISG (start-stop)."},
+  {t:"Huile",h:"Huile moteur",x:"Diesel : viscosité 5W-30, norme ACEA C2/C3 si FAP (voir manuel). Contrôle sur sol plat, moteur arrêté depuis 5 min. Vidange tous les 15 000 km / 1 an."},
+  {t:"Pneus",h:"Pneus",x:"Pression à froid : voir l’étiquette du montant de la porte conducteur (≈ 2,2 bar en usage normal). Ajouter ≈ 0,2–0,3 bar en charge ou sur autoroute. Pensez à la roue de secours."},
+  {t:"Batterie",h:"Batterie ISG",x:"Le système ISG demande une batterie adaptée au start-stop. Si le démarrage devient lent ou si l’ISG ne coupe plus, faire tester la batterie."},
+  {t:"Réservoir",h:"Carburant",x:"Réservoir ≈ 48 L, gazole uniquement. En cas de faux plein (essence), ne pas démarrer et faire remorquer."},
+  {t:"Dimensions",h:"Dimensions",x:"Longueur ≈ 4,07 m · largeur ≈ 1,77 m · hauteur ≈ 1,60 m · empattement ≈ 2,62 m. Coffre ≈ 440 L (≈ 1 250 L banquette rabattue)."}],
+ lights:[
+  {ic:"oil",tn:"r",t:"Pression d’huile",d:"Arrêt immédiat, moteur coupé. Ne pas rouler."},
+  {ic:"coolant",tn:"r",t:"Température liquide de refroidissement",d:"Arrêtez-vous, moteur coupé, attendez avant d’ouvrir le bouchon."},
+  {ic:"battery",tn:"r",t:"Batterie / charge",d:"Alternateur ou courroie en défaut. Rejoindre un garage sans couper les consommateurs."},
+  {ic:"brake",tn:"r",t:"Frein / liquide de frein",d:"Vérifier frein à main desserré et niveau de liquide. Si allumé en roulant : faire contrôler."},
+  {ic:"airbag",tn:"r",t:"Airbag",d:"Défaut du système airbag / prétensionneurs. Faire contrôler sans attendre."},
+  {ic:"belt",tn:"r",t:"Ceinture non bouclée",d:"Bouclez la ceinture ; le voyant s’éteint une fois bouclée."},
+  {ic:"door",tn:"r",t:"Porte / coffre ouvert",d:"Porte, coffre ou capot mal fermé."},
+  {ic:"glow",tn:"o",t:"Préchauffage diesel",d:"S’éteint avant le démarrage. Clignotant en roulant : défaut moteur."},
+  {ic:"engine",tn:"o",t:"Défaut moteur (MIL)",d:"Faire diagnostiquer rapidement."},
+  {ic:"dpf",tn:"o",t:"FAP (filtre à particules)",d:"Rouler 15–20 min à régime soutenu (> 2 000 tr/min) pour régénérer."},
+  {ic:"water",tn:"o",t:"Eau dans le gazole",d:"Purger le filtre à gazole au plus vite."},
+  {ic:"abs",tn:"o",t:"ABS",d:"Le freinage normal reste actif, mais sans assistance ABS."},
+  {ic:"esp",tn:"o",t:"ESP",d:"Clignote : le contrôle de stabilité agit. Fixe : défaut ou ESP désactivé."},
+  {ic:"tpms",tn:"o",t:"Pression des pneus (TPMS)",d:"Contrôler les pressions à froid."},
+  {ic:"steering",tn:"o",t:"Direction assistée",d:"Défaut de la direction assistée : direction plus dure. Faire contrôler."},
+  {ic:"fuel",tn:"o",t:"Réserve de carburant",d:"Niveau bas : faites le plein rapidement."},
+  {ic:"service",tn:"o",t:"Entretien à prévoir",d:"Échéance d’entretien : voir l’onglet Entretien."},
+  {ic:"isg",tn:"g",t:"ISG actif (AUTO vert)",d:"Le moteur est coupé par le start-stop."},
+  {ic:"isgoff",tn:"o",t:"ISG OFF",d:"Fonction désactivée, ou conditions non remplies (batterie, température, climatisation)."},
+  {ic:"turn",tn:"g",t:"Clignotants",d:"Clignotement rapide = ampoule grillée."},
+  {ic:"lowbeam",tn:"g",t:"Feux de croisement",d:"Feux de croisement allumés."},
+  {ic:"highbeam",tn:"b",t:"Feux de route",d:"Feux de route allumés."}],
+ spec:[{k:"Modèle",v:"Kia Venga 1.4 CRDi ISG Active"},{k:"Moteur",v:"Diesel 4 cyl. 1 396 cm³ turbo"},{k:"Puissance",v:"90 ch (66 kW)"},{k:"Couple",v:"220 Nm"},{k:"Boîte",v:"Manuelle 6 rapports"},{k:"Transmission",v:"Avant"},{k:"Réservoir",v:"≈ 48 L"},{k:"Coffre",v:"≈ 440 / 1 250 L"},{k:"Entretien",v:"15 000 km ou 1 an"},{k:"Pneus",v:"195/65 R15 ou 205/55 R16"}],
+ tasks:[
+  {tn:"g",t:"Tous les mois",d:"Niveau d’huile, liquide de refroidissement, lave-glace, pression des pneus à froid."},
+  {tn:"o",t:"Tous les 15 000 km / 1 an",d:"Vidange + filtre à huile, filtre à air et filtre à gazole selon carnet."},
+  {tn:"r",t:"Selon carnet",d:"Distribution, liquide de frein (2 ans), batterie ISG. Voir le carnet d’entretien."}],
+ notes:[{t:"Bons réflexes ISG",x:"Le moteur se coupe au point mort, embrayage relâché, véhicule à l’arrêt. Il redémarre en appuyant sur l’embrayage.\nUtiliser une batterie du type d’origine (compatible start-stop). Une batterie standard s’use vite avec l’ISG.\nLe bouton ISG OFF désactive la fonction jusqu’au prochain démarrage."}]
+};
+var KEY="venga.cfg.v1";
+function load(){
+ var c=clone(DEF),s=null;
+ try{s=JSON.parse(localStorage.getItem(KEY)||"null")}catch(e){}
+ if(s){for(var k in s){if(!(k in c))continue;
+  if(c[k]&&typeof c[k]==="object"&&!Array.isArray(c[k])&&s[k]&&typeof s[k]==="object")for(var j in s[k])c[k][j]=s[k][j];
+  else c[k]=s[k]}}
+ else{try{ // migration ancienne version
+  ["km","kmL","dtL"].forEach(function(k){var v=localStorage.getItem(k);if(v)c.svc[k]=v})}catch(e){}}
+
+ var st=(s&&Array.isArray(s.tabs))?s.tabs:[];
+ c.tabs=clone(DEF.tabs).map(function(t){var o=st.filter(function(x){return x.id===t.id})[0];return o?{id:t.id,l:(o.l==="Fiche"?"Infos":o.l)||t.l,on:t.id==="set"?true:o.on!==false}:t});
+ return c}
+var cfg=load();
+function save(){try{localStorage.setItem(KEY,JSON.stringify(cfg))}catch(e){}}
+
+/* ============ COULEURS ============ */
+function hex(s){s=String(s||"").trim();if(s[0]!=="#")s="#"+s;
+ if(/^#[0-9a-f]{3}$/i.test(s))s="#"+s[1]+s[1]+s[2]+s[2]+s[3]+s[3];
+ return /^#[0-9a-f]{6}$/i.test(s)?s.toLowerCase():null}
+function rgb(c){var n=parseInt(c.slice(1),16);return[n>>16,(n>>8)&255,n&255]}
+function toHex(a){return"#"+a.map(function(v){v=Math.max(0,Math.min(255,Math.round(v)));return(v<16?"0":"")+v.toString(16)}).join("")}
+function mix(a,b,t){var x=rgb(a),y=rgb(b);return toHex([0,1,2].map(function(i){return x[i]+(y[i]-x[i])*t}))}
+function lum(c){var r=rgb(c);return(0.299*r[0]+0.587*r[1]+0.114*r[2])/255}
+function shade(c,a){var r=rgb(c);return"rgb("+r.map(function(v){return Math.round(a<0?v*(1+a):v+(255-v)*a)}).join(",")+")"}
+var PAL=["#e8223b","#ff6a3d","#ffa51f","#f2c200","#3ccf8e","#19b5a5","#4aa3ff","#6b6bff","#a259ff","#ff5fa2","#ffffff","#cfd5dc","#8f9bab","#3a4350","#1b2029","#0b0d10"];
+var THEMES=[
+ ["Sombre",{acc:"#e8223b",bg:"#0f1319",panel:"#171d26",tx:"#e9edf2"}],
+ ["Noir",{acc:"#e8223b",bg:"#000000",panel:"#0e0e10",tx:"#f2f2f2"}],
+ ["Bleu nuit",{acc:"#4aa3ff",bg:"#0a1020",panel:"#121c33",tx:"#e6eeff"}],
+ ["Forêt",{acc:"#3ccf8e",bg:"#0d1511",panel:"#15211a",tx:"#e6f2ea"}],
+ ["Ambre",{acc:"#ffa51f",bg:"#14110b",panel:"#1f1a10",tx:"#f4ecd8"}],
+ ["Clair",{acc:"#e8223b",bg:"#eef1f5",panel:"#ffffff",tx:"#151a21"}]];
+function toMin(v){var m=/^(\d{1,2}):(\d{2})$/.exec(String(v).trim());return m?(+m[1])*60+(+m[2]):null}
+function isDay(){if(!cfg.auto.on)return false;var d=new Date(),n=d.getHours()*60+d.getMinutes(),a=toMin(cfg.auto.day),b=toMin(cfg.auto.night);if(a===null||b===null)return false;return a<b?(n>=a&&n<b):(n>=a||n<b)}
+function applyTheme(){
+ lastDay=isDay();
+ var t=lastDay?THEMES[5][1]:cfg.theme,r=document.documentElement.style,ac=rgb(t.acc).join(",");
+ r.setProperty("--bg",t.bg);r.setProperty("--panel",t.panel);r.setProperty("--tx",t.tx);r.setProperty("--acc",t.acc);
+ r.setProperty("--onacc",lum(t.acc)>.58?"#000":"#fff");
+ r.setProperty("--panel2",mix(t.panel,t.tx,.06));
+ r.setProperty("--acca","rgba("+ac+",.16)");r.setProperty("--accg","rgba("+ac+",.38)");
+ r.setProperty("--line",mix(t.panel,t.tx,.16));r.setProperty("--mut",mix(t.bg,t.tx,.6));r.setProperty("--tile",mix(t.bg,t.panel,.5));
+ r.fontSize=(16*cfg.scale/100)+"px"}
+
+/* ============ TOAST / MODALES ============ */
+var tt;function toast(m){var e=$("#toast");e.textContent=m;e.classList.add("on");clearTimeout(tt);tt=setTimeout(function(){e.classList.remove("on")},2600)}
+function modal(title,body,btns,onClose){
+ var ov=$("#ov");ov.style.display="block";
+ var box=h("div",{class:"mb"});
+ function close(){ov.removeChild(box);if(!ov.firstChild)ov.style.display="none";if(onClose)onClose()}
+ var md=h("div",{class:"md"},
+  h("div",{class:"mh"},h("span",null,title),h("button",{html:svg("x"),onclick:close,"aria-label":"Fermer"})),
+  h("div",{class:"mc"},body),
+  btns&&btns.length?h("div",{class:"mf"},btns.map(function(b){return h("button",{class:"btn "+(b.c||"sec"),onclick:function(){b.f(close)}},b.l)})):null);
+ box.appendChild(md);ov.appendChild(box);return close}
+function confirmBtn(label,fn){ // confirmation en deux temps (pas de confirm() dans une WebView)
+ var b=h("button",{class:"btn dng",onclick:function(){if(b.dataset.s){fn()}else{b.dataset.s="1";b.textContent="Confirmer ?";setTimeout(function(){b.dataset.s="";b.textContent=label},3000)}}},label);return b}
+
+/* ============ CHAMPS DE FORMULAIRE ============ */
+function colorField(val,onSet){
+ var cur=hex(val)||"#ffffff",pv=h("div",{class:"pv"}),inp=h("input",{type:"text",maxlength:7}),sw=h("div",{class:"sw"});
+ function upd(c,fire){cur=c;pv.style.background=c;inp.value=c;$$("button",sw).forEach(function(b){b.classList.toggle("on",b.dataset.c===c)});if(fire)onSet(c)}
+ PAL.forEach(function(c){sw.appendChild(h("button",{style:"background:"+c,"data-c":c,"aria-label":c,onclick:function(){upd(c,true)}}))});
+ inp.onchange=function(){var c=hex(inp.value);if(c)upd(c,true);else inp.value=cur};
+ upd(cur,false);
+ return{el:h("div",null,sw,h("div",{class:"cf"},pv,inp)),get:function(){return cur}}}
+function iconField(val){
+ var cur=val,g=h("div",{class:"ig"});
+ PICK.forEach(function(id){g.appendChild(h("button",{html:svg(id),"data-i":id,onclick:function(){cur=id;$$("button",g).forEach(function(b){b.classList.toggle("on",b.dataset.i===id)})}}))});
+ $$("button",g).forEach(function(b){b.classList.toggle("on",b.dataset.i===cur)});
+ return{el:g,get:function(){return cur}}}
+function toneField(val){
+ var cur=val,g=h("div",{class:"sw"});
+ Object.keys(TONE).forEach(function(k){g.appendChild(h("button",{style:"background:"+TONE[k],"data-t":k,"aria-label":TONE_N[k],onclick:function(){cur=k;$$("button",g).forEach(function(b){b.classList.toggle("on",b.dataset.t===k)})}}))});
+ $$("button",g).forEach(function(b){b.classList.toggle("on",b.dataset.t===cur)});
+ return{el:g,get:function(){return cur}}}
+function appField(val){
+ var cur=val||"",lab=h("p",{style:"margin:.2rem 0 .5rem"}),inp=h("input",{type:"text",placeholder:"nom.du.paquet (optionnel)"});
+ function upd(){lab.textContent=cur?(appLabel(cur)||cur):"Détection automatique (Auto Link / Android Auto)";inp.value=cur}
+ inp.onchange=function(){cur=inp.value.trim();upd()};
+ upd();
+ var el=h("div",null,lab,h("button",{class:"btn sec",style:"margin:0 .5rem .5rem 0",onclick:function(){pickApp(function(p){cur=p;upd()})}},"Choisir dans la liste"),
+  cur?h("button",{class:"btn sec",style:"margin:0 0 .5rem",onclick:function(){cur="";upd()}},"Détection auto"):null,inp);
+ return{el:el,get:function(){return cur}}}
+function simpleField(f,val){
+ var inp;
+ if(f.t==="area")inp=h("textarea",{rows:f.rows||4});
+ else if(f.t==="num")inp=h("input",{type:"number",inputmode:"numeric"});
+ else if(f.t==="dec")inp=h("input",{type:"text",inputmode:"decimal"});
+ else if(f.t==="date")inp=h("input",{type:"date"});
+ else inp=h("input",{type:"text"});
+ inp.value=val==null?"":val;
+ return{el:inp,get:function(){return f.t==="num"?(+inp.value||0):f.t==="dec"?(parseFloat(String(inp.value).replace(",","."))||0):inp.value}}}
+function mkField(f,val){
+ return f.t==="icon"?iconField(val):f.t==="tone"?toneField(val):f.t==="color"?colorField(val,function(){}):f.t==="app"?appField(val):simpleField(f,val)}
+
+/* liste des applis (via le pont Android) */
+var APPS=null;
+function appList(){if(APPS)return APPS;try{APPS=N&&N.apps?JSON.parse(N.apps()):[]}catch(e){APPS=[]}return APPS}
+function appLabel(p){var a=appList().filter(function(x){return x.p===p})[0];return a?a.l:""}
+var ICO={};function appIcon(p){if(!(p in ICO)){try{ICO[p]=N&&N.icon?N.icon(p):""}catch(e){ICO[p]=""}}return ICO[p]}
+function pickApp(cb){
+ var list=appList(),q=h("input",{type:"text",placeholder:"Rechercher une application…"}),box=h("div",{class:"al"});
+ function draw(){clear(box);var s=q.value.toLowerCase();
+  var r=list.filter(function(a){return!s||a.l.toLowerCase().indexOf(s)>=0||a.p.toLowerCase().indexOf(s)>=0});
+  if(!list.length)box.appendChild(h("p",null,"Liste indisponible ici : disponible dans l’appli Android. Saisis le nom du paquet à la main."));
+  r.forEach(function(a){var ic=appIcon(a.p);
+   box.appendChild(h("button",{onclick:function(){close();cb(a.p)}},
+    h("span",{class:"ic",style:"width:2rem;height:2rem;margin-right:.7rem;display:flex",html:ic?'<img style="width:100%;height:100%" src="data:image/png;base64,'+ic+'">':svg("car")}),a.l,h("small",null,a.p)))})}
+ q.oninput=draw;draw();
+ var close=modal("Choisir une application",h("div",null,q,box),[])}
+
+/* formulaire d’un élément */
+function openForm(title,fields,item,onSave,onDel){
+ var gets={},body=h("div");
+ fields.forEach(function(f){var fld=mkField(f,item[f.k]);gets[f.k]=fld.get;body.appendChild(h("label",null,f.l));body.appendChild(fld.el)});
+ var btns=[{l:"Annuler",f:function(c){c()}}];
+ var cl;
+ btns.push({l:"Enregistrer",c:"",f:function(c){var o=clone(item);fields.forEach(function(f){o[f.k]=gets[f.k]()});onSave(o);c()}});
+ cl=modal(title,body,btns);
+ if(onDel){var foot=$(".mf",$("#ov").lastChild);foot.insertBefore(confirmBtn("Supprimer",function(){onDel();cl()}),foot.firstChild)}}
+
+/* ============ ÉDITEURS DE LISTES ============ */
+var LISTS={
+ shortcuts:{title:"Raccourcis du Dashboard",fields:[{k:"l",l:"Nom",t:"text"},{k:"pkg",l:"Application à ouvrir",t:"app"},{k:"ic",l:"Icône de secours (si l’icône de l’app est introuvable)",t:"icon"}],
+  blank:function(){return{l:"Nouveau",pkg:"",match:"",ic:"link"}},label:function(i){return i.l},icon:function(i){return i.ic},after:function(){renderShortcuts()}},
+ lights:{title:"Voyants",fields:[{k:"t",l:"Nom",t:"text"},{k:"ic",l:"Symbole",t:"icon"},{k:"tn",l:"Couleur du voyant",t:"tone"},{k:"d",l:"Explication / que faire",t:"area"}],
+  blank:function(){return{ic:"warn",tn:"o",t:"Nouveau voyant",d:""}},label:function(i){return i.t},icon:function(i){return i.ic},tone:function(i){return i.tn},after:function(){renderLights()}},
+ chips:{title:"Boutons d’infos (onglet Auto)",fields:[{k:"t",l:"Texte du bouton",t:"text"},{k:"h",l:"Titre",t:"text"},{k:"x",l:"Contenu",t:"area"}],
+  blank:function(){return{t:"Nouveau",h:"Titre",x:""}},label:function(i){return i.t},after:function(){renderChips()}},
+ spec:{title:"Fiche technique",fields:[{k:"k",l:"Libellé",t:"text"},{k:"v",l:"Valeur",t:"text"}],
+  blank:function(){return{k:"Libellé",v:""}},label:function(i){return i.k+" : "+i.v},after:function(){renderFiche()}},
+ notes:{title:"Cartes d’info (onglet Fiche)",fields:[{k:"t",l:"Titre",t:"text"},{k:"x",l:"Texte (une ligne = un paragraphe)",t:"area",rows:6}],
+  blank:function(){return{t:"Nouvelle carte",x:""}},label:function(i){return i.t},after:function(){renderFiche()}},
+ tasks:{title:"Contrôles réguliers",fields:[{k:"t",l:"Quand",t:"text"},{k:"tn",l:"Couleur",t:"tone"},{k:"d",l:"À faire",t:"area"}],
+  blank:function(){return{tn:"g",t:"Nouveau",d:""}},label:function(i){return i.t},tone:function(i){return i.tn},after:function(){renderSvc()}},
+ fuel:{title:"Plein",fields:[{k:"d",l:"Date",t:"date"},{k:"km",l:"Kilométrage",t:"num"},{k:"l",l:"Litres",t:"dec"},{k:"e",l:"Montant (€)",t:"dec"}],
+  blank:function(){return{d:today(),km:+cfg.svc.km||"",l:"",e:""}},label:function(i){return fmtD(i.d)+" · "+nf(i.km)+" km · "+nf(i.l,1)+" L · "+nf(i.e,2)+" €"},sort:function(a,b){return b.km-a.km},after:function(){renderFuel();renderStats();renderSvc()}},
+ hist:{title:"Intervention",fields:[{k:"d",l:"Date",t:"date"},{k:"km",l:"Kilométrage",t:"num"},{k:"t",l:"Intervention",t:"text"},{k:"c",l:"Coût (€)",t:"dec"},{k:"n",l:"Note",t:"area"}],
+  blank:function(){return{d:today(),km:+cfg.svc.km||"",t:"",c:"",n:""}},label:function(i){return fmtD(i.d)+" · "+i.t+(i.km?" · "+nf(i.km)+" km":"")},sort:function(a,b){return(b.d||"").localeCompare(a.d||"")},after:function(){renderSvc();renderStats();renderFuel()}},
+ due:{title:"Échéance",fields:[{k:"t",l:"Nom",t:"text"},{k:"d",l:"Date limite",t:"date"}],
+  blank:function(){return{t:"Nouvelle échéance",d:""}},label:function(i){return i.t+" · "+fmtD(i.d)},after:function(){renderSvc();renderStats()}},
+ docs:{title:"Mon véhicule",fields:[{k:"k",l:"Libellé",t:"text"},{k:"v",l:"Valeur",t:"text"}],
+  blank:function(){return{k:"Libellé",v:""}},label:function(i){return i.k+" : "+(i.v||"—")},after:function(){renderFiche()}},
+ guides:{title:"Que faire si…",fields:[{k:"t",l:"Situation",t:"text"},{k:"x",l:"Conseils",t:"area",rows:6}],
+  blank:function(){return{t:"Nouvelle situation",x:""}},label:function(i){return i.t},after:function(){renderFiche()}}
+};
+function move(a,i,d){var j=i+d;if(j<0||j>=a.length)return;var t=a[i];a[i]=a[j];a[j]=t}
+function editList(name){
+ var L=LISTS[name],wrap=h("div");
+ function draw(){
+  clear(wrap);var arr=cfg[name];
+  arr.forEach(function(it,i){
+   var ic=L.icon?h("span",{class:"ic",style:L.tone?"color:"+TONE[L.tone(it)]:"",html:(name==="shortcuts"&&it.pkg&&appIcon(it.pkg))?'<img src="data:image/png;base64,'+appIcon(it.pkg)+'">':svg(L.icon(it))}):(L.tone?h("span",{class:"ic",html:'<svg viewBox="0 0 10 10"><circle cx="5" cy="5" r="3" fill="'+TONE[L.tone(it)]+'"/></svg>'}):null);
+   wrap.appendChild(h("div",{class:"li"},ic,h("span",{class:"lt"},L.label(it)),
+    h("button",{html:svg("up"),onclick:function(){move(arr,i,-1);commit()},"aria-label":"Monter"}),
+    h("button",{html:svg("down"),onclick:function(){move(arr,i,1);commit()},"aria-label":"Descendre"}),
+    h("button",{html:svg("edit"),onclick:function(){edit(i)},"aria-label":"Modifier"})))});
+  wrap.appendChild(h("button",{class:"btn",onclick:function(){openForm(L.title,L.fields,L.blank(),function(o){cfg[name].push(o);finish(name,o);draw()})}},"+ Ajouter"))}
+ function commit(){if(L.sort)cfg[name].sort(L.sort);save();draw();L.after()}
+ function edit(i){openForm(L.title,L.fields,cfg[name][i],function(o){cfg[name][i]=o;if(+o.km>(+cfg.svc.km||0))cfg.svc.km=+o.km;commit()},function(){cfg[name].splice(i,1);commit()})}
+ draw();
+ modal(L.title,wrap,[
+  {l:"Valeurs d’origine",f:function(){cfg[name]=clone(DEF[name]);commit();toast("Liste réinitialisée")}},
+  {l:"Terminé",c:"",f:function(c){c()}}])}
+
+/* ============ VOITURE 3D ============ */
+var sc=$("#scene"),car,rx=-16,ry=-35,auto=true,drag=null,ZOOM=1.15;
+function face(p,w,hh,t,bg,extra){var d=document.createElement("div");d.className="f";
+ d.style.cssText="width:"+w+"px;height:"+hh+"px;margin:"+(-hh/2)+"px 0 0 "+(-w/2)+"px;transform:"+t+";background:"+bg+";"+(extra||"");p.appendChild(d);return d}
+function box(p,L,H,W,pos,c){
+ var g=document.createElement("div");g.style.transform="translate3d("+pos[0]+"px,"+pos[1]+"px,"+pos[2]+"px)";p.appendChild(g);
+ face(g,L,H,"translateZ("+W/2+"px)",c.side);face(g,L,H,"rotateY(180deg) translateZ("+W/2+"px)",c.side);
+ face(g,W,H,"rotateY(90deg) translateZ("+L/2+"px)",c.front);face(g,W,H,"rotateY(-90deg) translateZ("+L/2+"px)",c.rear);
+ face(g,L,W,"rotateX(90deg) translateZ("+H/2+"px)",c.top);face(g,L,W,"rotateX(-90deg) translateZ("+H/2+"px)",c.bot||"#111");return g}
+function wheel(x,z){var R=19,n=14,w=15,g=document.createElement("div");
+ g.style.transform="translate3d("+x+"px,19px,"+z+"px)";car.appendChild(g);
+ for(var i=0;i<n;i++)face(g,2*R*Math.tan(Math.PI/n)+1,w,"rotateZ("+i*360/n+"deg) translateY("+(-R)+"px) rotateX(90deg)","#15181c");
+ [1,-1].forEach(function(s){face(g,2*R-6,2*R-6,"translateZ("+s*w/2+"px) rotateY("+(s>0?0:180)+"deg)","radial-gradient(#9aa3ad 0 22%,#555d67 24% 55%,#1b1f24 57%)","border-radius:50%")})}
+function buildCar(){
+ clear(sc);car=document.createElement("div");sc.appendChild(car);
+ var p=cfg.veh.paint,paint="linear-gradient("+shade(p,.12)+","+shade(p,-.1)+")",top=shade(p,.2),fr=shade(p,-.05),glass="linear-gradient(#2b3a4a,#16202b)";
+ box(car,250,36,106,[0,0,0],{side:paint,front:fr,rear:fr,top:shade(p,.15)});
+ box(car,128,38,98,[-28,-37,0],{side:glass,front:glass,rear:glass,top:top});
+ box(car,120,3,94,[-28,-57,0],{side:top,front:top,rear:top,top:top});
+ box(car,70,5,90,[84,-19,0],{side:paint,front:paint,rear:paint,top:shade(p,.25)});
+ face(car,60,12,"translateY(2px) rotateY(90deg) translateZ(125.5px)","#0b0e12","border-radius:3px");
+ face(car,22,12,"translateY(-5px) translateX(-34px) rotateY(90deg) translateZ(125.6px)","#fff3b8","border-radius:3px");
+ face(car,22,12,"translateY(-5px) translateX(34px) rotateY(90deg) translateZ(125.6px)","#fff3b8","border-radius:3px");
+ face(car,16,9,"translateY(2px) rotateY(90deg) translateZ(125.7px)","#e8e8e8","border-radius:50%;border:2px solid #111");
+ face(car,24,10,"translateY(-8px) translateX(-40px) rotateY(-90deg) translateZ(125.6px)","#d11f2f","border-radius:3px");
+ face(car,24,10,"translateY(-8px) translateX(40px) rotateY(-90deg) translateZ(125.6px)","#d11f2f","border-radius:3px");
+ face(car,250,4,"translateY(15px) translateZ(53.2px)","#2a2f36");face(car,250,4,"translateY(15px) rotateY(180deg) translateZ(53.2px)","#2a2f36");
+ [[80,-53],[80,53],[-80,-53],[-80,53]].forEach(function(a){wheel(a[0],a[1])})}
+function fitCar(){var st=$("#stage"),w=st.clientWidth,hh=st.clientHeight;ZOOM=Math.max(.55,Math.min(w/330,hh/175,1.7));apply()}
+function apply(){sc.style.transform="scale("+ZOOM+") rotateX("+rx+"deg) rotateY("+ry+"deg)"}
+var st=$("#stage");
+st.onpointerdown=function(e){drag=[e.clientX,e.clientY,ry,rx];auto=false;try{st.setPointerCapture(e.pointerId)}catch(_){}};
+st.onpointermove=function(e){if(!drag)return;ry=drag[2]+(e.clientX-drag[0])*.6;rx=Math.max(-80,Math.min(10,drag[3]+(e.clientY-drag[1])*.4));apply()};
+st.onpointerup=st.onpointercancel=function(){drag=null};
+(function loop(){if(auto){ry+=.25;apply()}requestAnimationFrame(loop)})();
+var VIEWS=[["Auto-rotation",null],["Face",[-5,-90]],["Profil",[-5,0]],["Arrière",[-5,90]],["Dessus",[-80,0]],["3/4",[-16,-35]]];
+function setMode(m){cfg.carMode=m;save();$("#stage").classList.toggle("photo",m==="photo");renderViews();fitCar()}
+function renderViews(){var b=clear($("#views")),ph=cfg.carMode==="photo";
+ b.appendChild(h("button",{class:ph?"on":"",onclick:function(){setMode("photo")}},"Photo"));
+ b.appendChild(h("button",{class:ph?"":"on",onclick:function(){setMode("3d")}},"3D"));
+ if(!ph)VIEWS.forEach(function(v){b.appendChild(h("button",{onclick:function(){if(!v[1]){auto=!auto}else{auto=false;rx=v[1][0];ry=v[1][1];apply()}}},v[0]))})}
+
+/* ============ OUTILS ============ */
+function p2(n){return(n<10?"0":"")+n}
+function today(){var d=new Date();return d.getFullYear()+"-"+p2(d.getMonth()+1)+"-"+p2(d.getDate())}
+function fmtD(s){var m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(s||"");return m?m[3]+"/"+m[2]+"/"+m[1].slice(2):(s||"—")}
+function nf(n,d){return Number(n).toLocaleString("fr-FR",{minimumFractionDigits:d||0,maximumFractionDigits:d||0})}
+function daysTo(s){if(!s)return null;var d=new Date(s+"T12:00:00");return isNaN(d)?null:Math.round((d-Date.now())/864e5)}
+function fuelStats(){
+ var a=cfg.fuel.filter(function(e){return+e.km>0&&+e.l>0}).sort(function(x,y){return x.km-y.km});
+ var rows=[],L=0,K=0,E=0,EL=0,E2=0;
+ a.forEach(function(e){EL+=+e.l;E+=+e.e||0});
+ for(var i=1;i<a.length;i++){var dk=a[i].km-a[i-1].km;if(dk<=0)continue;
+  rows.push({d:a[i].d,c:a[i].l/dk*100});L+=+a[i].l;K+=dk;E2+=+a[i].e||0}
+ return{rows:rows,n:a.length,avg:K?L/K*100:null,last:rows.length?rows[rows.length-1].c:null,price:EL&&E?E/EL:null,cost100:K&&E2?E2/K*100:null}}
+function svcInfo(){
+ var s=cfg.svc,k=+s.km,l=+s.kmL,ev=+s.every||15000;if(!k||!l)return null;
+ var left=l+ev-k,dl=null;
+ if(s.dtL){var d0=new Date(s.dtL+"T12:00:00");d0.setMonth(d0.getMonth()+(+s.months||12));dl=Math.round((d0-Date.now())/864e5)}
+ var tone=(left<0||(dl!==null&&dl<0))?"r":(left<2000||(dl!==null&&dl<30))?"o":"g";
+ return{left:left,days:dl,tone:tone,next:l+ev}}
+function dueList(){return cfg.due.map(function(x){return{t:x.t,d:x.d,n:daysTo(x.d)}}).sort(function(a,b){if(a.n===null)return 1;if(b.n===null)return-1;return a.n-b.n})}
+function dueTone(n){return n===null?"w":n<0?"r":n<=30?"o":"g"}
+function dueTxt(n){return n===null?"Date à renseigner":n<0?"En retard de "+(-n)+" j":n===0?"Aujourd’hui":"Dans "+n+" j"}
+function addItem(name,pre){
+ var L=LISTS[name];
+ openForm(L.title,L.fields,pre||L.blank(),function(o){cfg[name].push(o);finish(name,o)})}
+function finish(name,o){var L=LISTS[name];if(L.sort)cfg[name].sort(L.sort);if(o&&+o.km>(+cfg.svc.km||0))cfg.svc.km=+o.km;save();L.after()}
+
+/* ============ RENDUS ============ */
+var lastDay=null;
+function tick(){
+ var d=new Date();
+ $("#clock").textContent=d.toLocaleTimeString("fr-FR",{hour:"2-digit",minute:"2-digit",hour12:!cfg.h24});
+ $("#date").textContent=d.toLocaleDateString("fr-FR",{weekday:"long",day:"numeric",month:"long"});
+ if(cfg.auto.on&&isDay()!==lastDay){applyTheme();renderSettings()}}
+setInterval(tick,1000);
+function renderHeader(){
+ var l=clear($("#logo"));l.appendChild(h("span",{class:"kia",role:"img","aria-label":cfg.veh.brand}));
+ $("#vname").textContent=cfg.veh.name;$("#vsub").textContent=cfg.veh.sub;
+ $("#ck").style.display=cfg.clock?"":"none";tick()}
+var TABICON={car:"car",trip:"gauge",fuel:"fuel",svc:"service",vo:"warn",fi:"book",set:"gear"};
+function renderNav(){
+ var n=clear($("#nav")),cur=$("section.on");cur=cur?cur.id.slice(2):"car";
+ var vis=cfg.tabs.filter(function(t){return t.on});
+ if(!vis.some(function(t){return t.id===cur}))cur=vis[0].id;
+ vis.forEach(function(t){n.appendChild(h("button",{"data-t":t.id,onclick:function(){go(t.id)},html:svg(TABICON[t.id])+"<span>"+esc(t.l)+"</span>"}))});
+ go(cur)}
+function go(id){
+ $$("#nav button").forEach(function(b){b.classList.toggle("on",b.dataset.t===id)});
+ $$("main>section").forEach(function(s){s.classList.toggle("on",s.id==="s-"+id)});
+ $("main").scrollTop=0;
+ if(id==="car")fitCar();if(id==="trip")updTrip()}
+function card(title,ed,kids){return h("div",{class:"card"},h("h2",null,h("span",null,title),ed||null),kids)}
+function edBtn(name,label){return h("button",{class:"ed",onclick:function(){editList(name)}},label||"✎ Modifier")}
+
+/* ---- accueil ---- */
+function renderStats(){
+ var b=clear($("#stats"));
+ function st(ic,lab,val,sub,tone,tab){b.appendChild(h("button",{class:"stat",onclick:function(){go(tab)}},
+  h("span",{class:"si",style:"color:"+TONE[tone],html:svg(ic)}),h("span",{class:"sv"},h("small",null,lab),h("b",null,val),h("em",null,sub))))}
+ var s=svcInfo();
+ if(s)st("service","Prochaine révision",(s.left<0?"+"+nf(-s.left):nf(s.left))+" km",s.left<0?"de retard":"à "+nf(s.next)+" km",s.tone,"svc");
+ else st("service","Prochaine révision","À régler","Entretien → kilométrage","w","svc");
+ var d=dueList()[0];
+ if(d&&d.n!==null)st("calendar",d.t,dueTxt(d.n),fmtD(d.d),dueTone(d.n),"svc");
+ else st("calendar","Échéances","Aucune date","Entretien → échéances","w","svc");
+ var f=fuelStats();
+ if(f.avg)st("fuel","Consommation",nf(f.avg,1)+" L/100","dernier plein : "+nf(f.last,1),"b","fuel");
+ else st("fuel","Consommation","—","Ajouter 2 pleins","w","fuel")}
+function renderShortcuts(){
+ var b=clear($("#sc"));
+ cfg.shortcuts.forEach(function(s,i){
+  var ic=s.pkg?appIcon(s.pkg):"";
+  b.appendChild(h("button",{class:"sc"+(i?" alt":""),onclick:function(){runShortcut(i)}},
+   h("span",{class:"sci"+(ic?" img":""),html:ic?'<img src="data:image/png;base64,'+ic+'">':svg(s.ic||"link")}),s.l))});
+ b.appendChild(h("button",{class:"sc alt",style:"flex:0 0 auto;min-height:4.2rem;color:var(--mut);font-weight:400;font-size:.85rem",onclick:function(){editList("shortcuts")}},cfg.shortcuts.length?"✎ Raccourcis":"+ Raccourci"))}
+function runShortcut(i){
+ var s=cfg.shortcuts[i];
+ if(!N){toast("Raccourci actif dans l’appli Android (APK)");return}
+ var pkg=s.pkg||(s.match?N.find(s.match):"");
+ if(!pkg){toast(s.l+" introuvable : choisis l’application");editList("shortcuts");return}
+ if(!s.pkg){s.pkg=pkg;save();renderShortcuts()}
+ toast("Ouverture de "+s.l+"…");
+ var r=N.launch(pkg);if(r!=="ok")toast("Impossible d’ouvrir "+s.l)}
+function renderChips(){
+ var c=clear($("#chips"));
+ function show(i){$$(".chip",c).forEach(function(b,j){b.classList.toggle("on",j===i)});
+  var it=cfg.chips[i];$("#info").innerHTML=it?"<h2><span>"+esc(it.h)+'</span><button class="ed" id="edchips">✎ Modifier</button></h2><p>'+esc(it.x)+"</p>":'<h2><span>Infos</span><button class="ed" id="edchips">+ Ajouter</button></h2>';
+  $("#edchips").onclick=function(){editList("chips")}}
+ cfg.chips.forEach(function(it,i){c.appendChild(h("button",{class:"chip",onclick:function(){show(i)}},it.t))});
+ show(0)}
+
+/* ---- trajet GPS ---- */
+var G={fix:false,t:0,speed:0,brg:null,alt:null,acc:null},GC=2*Math.PI*80*.75,lastSave=0;
+function cardinal(b){return["N","NE","E","SE","S","SO","O","NO"][Math.round(b/45)%8]}
+function renderTrip(){
+ var root=clear($("#s-trip")),c1=h("div",{class:"c1"}),c2=h("div",{class:"c2"}),t="";
+ for(var v=0;v<=200;v+=20){var a=(135+v/200*270)*Math.PI/180,x=100+Math.cos(a)*68,y=100+Math.sin(a)*68;
+  t+='<text class="gk" x="'+x.toFixed(1)+'" y="'+(y+3).toFixed(1)+'">'+v+"</text>"}
+ c1.appendChild(h("div",{class:"card"},h("div",{class:"gauge",html:'<svg viewBox="0 0 200 200"><circle class="gt" cx="100" cy="100" r="80" stroke-dasharray="'+GC+' 600" transform="rotate(135 100 100)"/><circle class="gp" id="gp" cx="100" cy="100" r="80" stroke-dasharray="0 600" transform="rotate(135 100 100)"/>'+t+'<text class="gs" id="gs" x="100" y="116">--</text><text class="gu" x="100" y="136">KM/H</text></svg>'}),
+  h("div",{class:"mini"},h("div",null,h("small",null,"Cap"),h("b",{id:"gb"},"—")),h("div",null,h("small",null,"Altitude"),h("b",{id:"ga"},"—")),h("div",null,h("small",null,"Signal"),h("b",{id:"gq",style:"font-size:.95rem"},"—")))));
+ ["a","b"].forEach(function(k){
+  c2.appendChild(card("Trajet "+k.toUpperCase(),h("button",{class:"ed",onclick:function(){cfg.trips[k]={km:0,ms:0,max:0};save();updTrip();toast("Trajet "+k.toUpperCase()+" remis à zéro")}},"Remise à zéro"),
+   h("div",{class:"trip"},tcell("Distance","t"+k+"d"),tcell("Durée","t"+k+"t"),tcell("Moyenne","t"+k+"m"),tcell("Maxi","t"+k+"x"))))});
+ c2.appendChild(h("p",{class:"note"},N?"Le GPS fonctionne sans internet. Les distances comptent uniquement quand la voiture roule.":"Le GPS est disponible dans l’appli Android (simulation ici)."));
+ root.appendChild(c1);root.appendChild(c2);updTrip()}
+function tcell(l,id){return h("div",null,h("small",null,l),h("b",{id:id},"—"))}
+function updTrip(){
+ if(!$("#gs"))return;
+ var sp=G.fix?Math.round(G.speed):null;
+ $("#gs").textContent=sp===null?"--":sp;
+ var gp=$("#gp");gp.setAttribute("stroke-dasharray",(Math.min(1,(G.fix?G.speed:0)/200)*GC)+" 600");
+ gp.setAttribute("class","gp"+(cfg.alert&&G.fix&&G.speed>cfg.alert?" over":""));
+ $("#gb").textContent=G.brg==null?"—":Math.round(G.brg)+"° "+cardinal(G.brg);
+ $("#ga").textContent=G.alt==null?"—":Math.round(G.alt)+" m";
+ $("#gq").textContent=!N?"Simulé":G.fix?(G.acc!=null&&G.acc<15?"Bon":"Moyen"):"Recherche…";
+ ["a","b"].forEach(function(k){var t=cfg.trips[k],hrs=t.ms/36e5;
+  $("#t"+k+"d").textContent=nf(t.km,1)+" km";
+  var m=Math.round(t.ms/6e4);$("#t"+k+"t").textContent=Math.floor(m/60)+" h "+p2(m%60);
+  $("#t"+k+"m").textContent=hrs>0?Math.round(t.km/hrs)+" km/h":"—";
+  $("#t"+k+"x").textContent=Math.round(t.max)+" km/h"})}
+window.__gps=function(sp,br,alt,acc){
+ var now=Date.now(),dt=G.t?(now-G.t)/1000:0;G.t=now;G.fix=true;G.speed=sp<0?0:sp;G.acc=acc;if(br>=0)G.brg=br;G.alt=alt;
+ if(G.speed>=3&&dt>0&&dt<10)["a","b"].forEach(function(k){var t=cfg.trips[k];t.km+=G.speed*dt/3600;t.ms+=dt*1000;if(G.speed>t.max)t.max=G.speed});
+ if(now-lastSave>8000){save();lastSave=now}
+ updTrip()};
+window.__gpsStart=function(){try{if(N&&N.startGps)N.startGps()}catch(e){}};
+setInterval(function(){if(G.fix&&Date.now()-G.t>6000){G.fix=false;updTrip()}},2000);
+
+/* ---- carburant ---- */
+function renderFuel(){
+ var root=clear($("#s-fuel")),c1=h("div",{class:"c1"}),c2=h("div",{class:"c2"}),f=fuelStats();
+ var k=h("div",{class:"kpis"});
+ function kpi(l,v,s){k.appendChild(h("div",{class:"kpi"},h("small",null,l),h("b",null,v),h("em",null,s||"")))}
+ kpi("Dernier plein",f.last?nf(f.last,1)+" L/100":"—","consommation");
+ kpi("Moyenne",f.avg?nf(f.avg,1)+" L/100":"—",f.n+" pleins");
+ kpi("Prix moyen",f.price?nf(f.price,3)+" €/L":"—","");
+ kpi("Coût",f.cost100?nf(f.cost100,2)+" €":"—","aux 100 km");
+ c1.appendChild(k);
+ var ch;
+ if(f.rows.length){
+  var R=f.rows.slice(-12),mx=Math.max.apply(null,R.map(function(r){return r.c}))*1.2,W=600,H=170,bw=W/R.length,s="";
+  R.forEach(function(r,i){var bh=(r.c/mx)*(H-40),x=i*bw+bw*.18,y=H-26-bh;
+   s+='<rect x="'+x.toFixed(1)+'" y="'+y.toFixed(1)+'" width="'+(bw*.64).toFixed(1)+'" height="'+bh.toFixed(1)+'" rx="5" fill="'+(r.c>f.avg*1.08?TONE.o:TONE.g)+'" opacity=".85"/><text x="'+(x+bw*.32).toFixed(1)+'" y="'+(y-5).toFixed(1)+'" style="fill:var(--tx);font-size:10px">'+nf(r.c,1)+'</text><text x="'+(x+bw*.32).toFixed(1)+'" y="'+(H-10)+'">'+fmtD(r.d).slice(0,5)+"</text>"});
+  var ay=H-26-(f.avg/mx)*(H-40);
+  s+='<line x1="0" x2="'+W+'" y1="'+ay.toFixed(1)+'" y2="'+ay.toFixed(1)+'" stroke="var(--mut)" stroke-dasharray="4 4" opacity=".6"/>';
+  ch=h("div",{html:'<svg class="chart" viewBox="0 0 '+W+" "+H+'">'+s+"</svg>"})}
+ else ch=h("p",null,"Ajoute au moins deux pleins (réservoir plein à chaque fois, avec le kilométrage) pour voir la consommation.");
+ var aut=f.avg?Math.round(cfg.tank/f.avg*100):null;
+ c1.appendChild(card("Consommation (L/100 km)",null,[ch,aut?h("p",null,"Autonomie estimée avec un plein de "+cfg.tank+" L : ≈ "+nf(aut)+" km"):null]));
+ c2.appendChild(h("div",{class:"card",style:"text-align:center"},h("button",{class:"btn",style:"margin:0;font-size:1.05rem;padding:.9rem 1.6rem",onclick:function(){addItem("fuel")}},"+ Ajouter un plein")));
+ var all=cfg.fuel.slice().sort(function(a,b){return b.km-a.km}).slice(0,8);
+ c2.appendChild(card("Derniers pleins",edBtn("fuel","✎ Tout voir"),all.length?all.map(function(e){
+  var r=f.rows.filter(function(x){return x.d===e.d})[0];
+  return h("div",{class:"vo"},h("div",null,h("b",null,fmtD(e.d)+" · "+nf(e.km)+" km"),h("span",null,nf(e.l,1)+" L · "+nf(e.e,2)+" €")),h("div",{class:"r"},r?nf(r.c,1)+" L/100":""))}):h("p",null,"Aucun plein enregistré.")));
+ root.appendChild(c1);root.appendChild(c2)}
+
+/* ---- entretien ---- */
+function renderSvc(){
+ var root=clear($("#s-svc")),s=cfg.svc,c1=h("div",{class:"c1"}),c2=h("div",{class:"c2"});
+ var km=h("input",{type:"number",inputmode:"numeric",placeholder:"ex. 142500"}),kl=h("input",{type:"number",inputmode:"numeric"}),dt=h("input",{type:"date"});
+ km.value=s.km;kl.value=s.kmL;dt.value=s.dtL;
+ var res=h("div");
+ function calc(){clear(res);var i=svcInfo();
+  if(!i){res.appendChild(h("p",null,"Renseigne les kilométrages pour voir la prochaine échéance."));return}
+  res.appendChild(h("p",{style:"margin-top:.8rem"},"Prochaine révision à "+nf(i.next)+" km"));
+  res.appendChild(h("div",{class:"big "+(i.tone==="r"?"bad":i.tone==="o"?"warn":"ok")},(i.left<0?"+"+nf(-i.left):nf(i.left))+" km"));
+  res.appendChild(h("p",null,(i.left<0?"de retard":"restants")+(i.days!==null?" · "+(i.days>=0?i.days+" jours restants":"échéance annuelle dépassée de "+(-i.days)+" jours"):"")))}
+ c1.appendChild(card("Suivi d’entretien",null,[
+  h("p",null,"Intervalle : "+nf(s.every)+" km ou "+s.months+" mois."),
+  h("label",null,"Kilométrage actuel"),km,h("label",null,"Km à la dernière révision"),kl,h("label",null,"Date de la dernière révision"),dt,
+  h("button",{class:"btn",onclick:function(){s.km=km.value;s.kmL=kl.value;s.dtL=dt.value;save();calc();renderStats();toast("Enregistré")}},"Enregistrer"),
+  h("button",{class:"btn sec",onclick:revisionDone},"Révision faite"),res]));
+ calc();
+ var dl=dueList();
+ c1.appendChild(card("Échéances",edBtn("due"),dl.length?dl.map(function(x){return h("div",{class:"vo"},h("i",{style:"background:"+TONE[dueTone(x.n)]}),h("div",null,h("b",null,x.t),h("span",null,x.d?fmtD(x.d):"—")),h("div",{class:"r",style:"color:"+TONE[dueTone(x.n)]},dueTxt(x.n)))}):h("p",null,"Aucune échéance.")));
+ var hs=cfg.hist.slice().sort(function(a,b){return(b.d||"").localeCompare(a.d||"")}),tot=cfg.hist.reduce(function(a,e){return a+(+e.c||0)},0);
+ c2.appendChild(card("Carnet d’entretien",h("span",null,h("button",{class:"ed",style:"margin-right:.4rem",onclick:function(){addItem("hist")}},"+ Ajouter"),edBtn("hist","✎")),
+  hs.length?[hs.slice(0,6).map(function(e){return h("div",{class:"vo"},h("i",{style:"background:"+TONE.b}),h("div",null,h("b",null,e.t),h("span",null,fmtD(e.d)+(e.km?" · "+nf(e.km)+" km":"")+(e.n?" · "+e.n:""))),h("div",{class:"r"},e.c?nf(e.c,2)+" €":""))}),h("p",null,"Total dépensé : "+nf(tot,2)+" €")]:h("p",null,"Aucune intervention enregistrée.")));
+ c2.appendChild(card("Contrôles réguliers",edBtn("tasks"),cfg.tasks.map(function(t){return h("div",{class:"vo"},h("i",{style:"background:"+TONE[t.tn]}),h("div",null,h("b",null,t.t),h("span",null,t.d)))})));
+ root.appendChild(c1);root.appendChild(c2)}
+function revisionDone(){var s=cfg.svc;openForm(LISTS.hist.title,LISTS.hist.fields,{d:today(),km:+s.km||"",t:"Révision",c:"",n:""},function(o){cfg.hist.push(o);if(+o.km)s.kmL=+o.km;s.dtL=o.d;finish("hist",o)})}
+
+/* ---- voyants ---- */
+var vsel=0;
+function renderLights(){
+ var root=clear($("#s-vo")),L=cfg.lights;
+ if(vsel>=L.length)vsel=0;
+ var det=h("div",{class:"card",id:"vdet"}),grid=h("div",{id:"vgrid"});
+ function showDet(){var it=L[vsel];clear(det);
+  if(!it){det.appendChild(h("span",null,"Aucun voyant."));return}
+  det.appendChild(h("span",{class:"ti",style:"color:"+TONE[it.tn],html:svg(it.ic)}));
+  det.appendChild(h("div",{style:"flex:1"},h("b",null,it.t),h("span",null,it.d)))}
+ L.forEach(function(it,i){grid.appendChild(h("button",{class:"tile"+(i===vsel?" on":""),onclick:function(){vsel=i;$$(".tile",grid).forEach(function(b,j){b.classList.toggle("on",j===i)});showDet()}},
+  h("span",{class:"ti",style:"color:"+TONE[it.tn],html:svg(it.ic)}),it.t))});
+ root.appendChild(h("div",{class:"card",style:"display:flex;align-items:center;justify-content:space-between;padding:.6rem 1rem"},h("b",null,"Voyants du tableau de bord"),edBtn("lights")));
+ root.appendChild(det);root.appendChild(grid);showDet()}
+
+/* ---- infos ---- */
+function renderFiche(){
+ var root=clear($("#s-fi")),c1=h("div",{class:"c1"}),c2=h("div",{class:"c2"});
+ c1.appendChild(card("Fiche technique",edBtn("spec"),[cfg.spec.map(function(r){return h("div",{class:"row"},h("span",null,r.k),h("span",null,r.v))}),
+  h("p",{class:"note",style:"margin:.6rem 0 0"},"Valeurs indicatives, à confirmer avec le manuel de votre véhicule.")]));
+ c1.appendChild(card("Mon véhicule",edBtn("docs"),cfg.docs.map(function(r){return h("div",{class:"row"},h("span",null,r.k),h("span",null,r.v||"—"))})));
+ c2.appendChild(card("Que faire si…",edBtn("guides"),cfg.guides.map(function(g){return h("details",null,h("summary",null,g.t),h("p",null,g.x))})));
+ cfg.notes.forEach(function(n){c2.appendChild(card(n.t,null,String(n.x).split("\n").filter(Boolean).map(function(l){return h("p",null,l)})))});
+ c2.appendChild(h("div",{class:"card",style:"text-align:center;padding:.5rem"},edBtn("notes","✎ Modifier les cartes d’info")));
+ root.appendChild(c1);root.appendChild(c2)}
+function renderAll(){renderStats();renderFuel();renderSvc();renderFiche()}
+
+/* ============ RÉGLAGES ============ */
+function tg(get,set){var b=h("button",{class:"tg"+(get()?" on":""),onclick:function(){set(!get());b.classList.toggle("on",get())}});return b}
+function opt(label,ctrl){return h("div",{class:"opt"},h("span",null,label),ctrl)}
+function txt(label,get,set,type){var i=h("input",{type:type==="number"?"number":"text"});if(type==="number")i.setAttribute("inputmode","decimal");i.value=get();i.onchange=function(){set(type==="number"?(parseFloat(String(i.value).replace(",","."))||0):i.value)};return h("div",null,h("label",null,label),i)}
+function renderSettings(){
+ var root=clear($("#s-set")),t=cfg.theme;
+ function upd(){save();applyTheme();fitCar()}
+ var pre=h("div",{class:"pre"},THEMES.map(function(p){return h("button",{style:"background:"+p[1].bg+";color:"+p[1].tx+";border-color:"+p[1].acc,onclick:function(){cfg.theme=clone(p[1]);upd();renderSettings()}},p[0])}));
+ function cf(label,key){var f=colorField(t[key],function(c){cfg.theme[key]=c;upd()});return h("div",null,h("label",null,label),f.el)}
+ var sc2=h("input",{type:"range",min:80,max:140,step:5});sc2.value=cfg.scale;
+ var sl=h("span",null,cfg.scale+" %");
+ sc2.oninput=function(){cfg.scale=+sc2.value;sl.textContent=cfg.scale+" %";upd()};
+ root.appendChild(card("Apparence",null,[h("label",null,"Thèmes"),pre,cf("Couleur d’accent","acc"),cf("Fond","bg"),cf("Cartes","panel"),cf("Texte","tx"),
+  h("label",null,"Taille du texte et des boutons : ",sl),sc2,
+  opt("Thème clair le jour, thème choisi la nuit",tg(function(){return cfg.auto.on},function(v){cfg.auto.on=v;save();applyTheme()})),
+  h("div",{style:"display:flex"},h("div",{style:"flex:1;margin-right:.6rem"},txt("Jour dès (HH:MM)",function(){return cfg.auto.day},function(v){cfg.auto.day=v;save();applyTheme()})),h("div",{style:"flex:1"},txt("Nuit dès (HH:MM)",function(){return cfg.auto.night},function(v){cfg.auto.night=v;save();applyTheme()})))]));
+ var paint=colorField(cfg.veh.paint,function(c){cfg.veh.paint=c;save();buildCar()});
+ root.appendChild(card("Véhicule",null,[
+  txt("Nom",function(){return cfg.veh.name},function(v){cfg.veh.name=v;save();renderHeader()}),
+  txt("Sous-titre",function(){return cfg.veh.sub},function(v){cfg.veh.sub=v;save();renderHeader()}),
+  txt("Capacité du réservoir (L)",function(){return cfg.tank},function(v){cfg.tank=v||48;save();renderFuel()},"number"),
+  h("label",null,"Couleur de la carrosserie 3D"),paint.el,
+  opt("Afficher la photo (sinon voiture 3D)",tg(function(){return cfg.carMode==="photo"},function(v){setMode(v?"photo":"3d")})),
+  opt("Rotation automatique de la voiture 3D",tg(function(){return cfg.rotate},function(v){cfg.rotate=v;auto=v;save()}))]));
+ root.appendChild(card("Dashboard",null,[
+  h("p",null,"Raccourcis de l’onglet Auto (AutoLink, navigation…)."),
+  h("button",{class:"btn",onclick:function(){editList("shortcuts")}},"Gérer les raccourcis"),
+  txt("Alerte de vitesse en km/h (0 = aucune)",function(){return cfg.alert},function(v){cfg.alert=v;save();updTrip()},"number"),
+  opt("Afficher l’heure",tg(function(){return cfg.clock},function(v){cfg.clock=v;save();renderHeader()})),
+  opt("Heure au format 24 h",tg(function(){return cfg.h24},function(v){cfg.h24=v;save();tick()})),
+  opt("Garder l’écran allumé",tg(function(){return cfg.keepOn},function(v){cfg.keepOn=v;save();if(N&&N.keepOn)N.keepOn(v)}))]));
+ var cb=[["lights","Voyants"],["chips","Boutons d’infos"],["spec","Fiche technique"],["docs","Mon véhicule"],["guides","Que faire si…"],["notes","Cartes d’info"],["tasks","Contrôles réguliers"],["due","Échéances"],["hist","Carnet d’entretien"],["fuel","Pleins"]];
+ root.appendChild(card("Contenus",null,h("div",{class:"pre"},cb.map(function(c){return h("button",{onclick:function(){editList(c[0])}},c[1])}))));
+ root.appendChild(card("Entretien",null,[
+  txt("Intervalle (km)",function(){return cfg.svc.every},function(v){cfg.svc.every=v||15000;save();renderSvc();renderStats()},"number"),
+  txt("Intervalle (mois)",function(){return cfg.svc.months},function(v){cfg.svc.months=v||12;save();renderSvc();renderStats()},"number")]));
+ root.appendChild(card("Onglets",null,cfg.tabs.map(function(tb){
+  var i=h("input",{type:"text"});i.value=tb.l;i.onchange=function(){tb.l=i.value||tb.l;save();renderNav()};
+  return h("div",{class:"opt"},h("div",{style:"flex:1;margin-right:1rem"},i),tb.id==="set"?h("span",{style:"color:var(--mut);font-size:.8rem"},"toujours visible"):tg(function(){return tb.on},function(v){tb.on=v;save();renderNav()}))})));
+ root.appendChild(card("Sauvegarde",null,[
+  h("p",null,"Copie le texte pour sauvegarder tes réglages et données, ou colle-le pour les restaurer."),
+  h("button",{class:"btn",onclick:exportCfg},"Exporter"),h("button",{class:"btn sec",onclick:importCfg},"Importer"),
+  h("div",{style:"margin-top:.8rem"},confirmBtn("Tout réinitialiser",function(){cfg=clone(DEF);save();boot();toast("Réglages d’origine restaurés")}))]));
+ root.appendChild(h("p",{class:"note"},"Valeurs indicatives : vérifiez toujours avec le manuel du véhicule. Tout fonctionne hors ligne."))}
+function exportCfg(){
+ var ta=h("textarea",{rows:9,readonly:true});ta.value=JSON.stringify(cfg);
+ modal("Exporter les réglages",h("div",null,h("p",{style:"color:var(--mut)"},"Sélectionne puis copie ce texte."),ta),[
+  {l:"Tout sélectionner",f:function(){ta.focus();ta.select();try{document.execCommand("copy");toast("Copié")}catch(e){}}},{l:"Fermer",c:"",f:function(c){c()}}])}
+function importCfg(){
+ var ta=h("textarea",{rows:9,placeholder:"Colle ici les réglages exportés"});
+ modal("Importer des réglages",ta,[{l:"Annuler",f:function(c){c()}},{l:"Importer",c:"",f:function(c){
+  try{var o=JSON.parse(ta.value);if(!o||typeof o!=="object")throw 0;localStorage.setItem(KEY,JSON.stringify(o));cfg=load();save();boot();c();toast("Réglages importés")}catch(e){toast("Texte invalide")}}}])}
+
+/* ============ DÉMARRAGE ============ */
+function boot(){
+ applyTheme();auto=cfg.rotate;$("#stage").classList.toggle("photo",cfg.carMode==="photo");
+ buildCar();renderHeader();renderViews();renderStats();renderShortcuts();renderChips();renderTrip();renderFuel();renderSvc();renderLights();renderFiche();renderSettings();renderNav();
+ if(N&&N.keepOn)try{N.keepOn(cfg.keepOn)}catch(e){}
+ fitCar()}
+window.addEventListener("resize",fitCar);
+boot();setTimeout(fitCar,300);window.__gpsStart();
+})();
+</script></body></html>
